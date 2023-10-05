@@ -30,9 +30,15 @@ const useStyles = makeStyles((theme) => ({
       flexShrink: 0,
     },
   },
+  drawerColor: {
+    backgroundColor: 'rgb(66, 73, 100)',
+  },
+  listItemText: {
+    color: 'white',
+  },
   appBar: {
     [theme.breakpoints.up('sm')]: {
-      width: `calc(100% - ${drawerWidth}px)`,
+      width: '100%',
       marginLeft: drawerWidth,
     },
   },
@@ -46,6 +52,8 @@ const useStyles = makeStyles((theme) => ({
   toolbar: theme.mixins.toolbar,
   drawerPaper: {
     width: drawerWidth,
+    backgroundColor: 'rgb(66, 73, 100)',
+    marginTop: `65px`,
   },
   content: {
     flexGrow: 1,
@@ -70,7 +78,7 @@ function ResponsiveDrawer(props) {
 
   const drawer = (
     <div>
-      <div className={classes.toolbar} />
+      {/* <div className={classes.toolbar} /> */}
       <Divider />
       <List>
         {['All Tickets', 'Open', 'Pending', 'On Hold', 'Solve'].map((text, index) => (
@@ -81,7 +89,7 @@ function ResponsiveDrawer(props) {
             selected={selectedOption === text}
           >
             <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
+            <ListItemText primary={text} className={classes.listItemText} />
           </ListItem>
         ))}
       </List>
@@ -90,7 +98,7 @@ function ResponsiveDrawer(props) {
         {['Knowledge', 'Analysis/Statistic', 'Administration'].map((text, index) => (
           <ListItem button key={text}>
             <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
+            <ListItemText primary={text} className={classes.listItemText} />
           </ListItem>
         ))}
       </List>
@@ -102,7 +110,7 @@ function ResponsiveDrawer(props) {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar position="fixed" className={classes.appBar}>
+      <AppBar position="fixed" className={`${classes.appBar} ${classes.drawerColor}`}>
         <Toolbar>
           <IconButton
             color="inherit"
