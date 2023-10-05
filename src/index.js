@@ -1,15 +1,6 @@
 import React from 'react';
 import ReactDom from 'react-dom'
-import ResponsiveDrawer from './components/menu'
-
-const App = () => {
-    return(
-        <div>
-            <ResponsiveDrawer />
-        </div>
-    )
-}
-
+import App from './App'
 
 
 ReactDom.render(<App />, document.getElementById('root'))

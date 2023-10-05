@@ -1,13 +1,12 @@
-import express from 'express';
+import React from 'react';
+import ResponsiveDrawer from './components/menu'
 
-const app = express();
-app.use(express.urlencoded({extended: true}));
-app.use(express.json())
+const App = () => {
+    return(
+        <div>
+            <ResponsiveDrawer />
+        </div>
+    )
+}
 
-app.use(express.static('./public'))
-
-const port = 8080;
-
-app.listen(port, () => {
-    console.log('Listen port at 8080.')
-})
+export default App;

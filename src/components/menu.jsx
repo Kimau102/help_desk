@@ -16,6 +16,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
+import DataTable from './allList';
 
 const drawerWidth = 240;
 
@@ -41,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
       display: 'none',
     },
   },
-  // necessary for content to be below app bar
+
   toolbar: theme.mixins.toolbar,
   drawerPaper: {
     width: drawerWidth,
@@ -57,27 +58,28 @@ function ResponsiveDrawer(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [selectedOption, setSelectedOption] = React.useState('All tickets')
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
+
+  const handleOptionClick = (option) => {
+    setSelectedOption(option);
+  }
 
   const drawer = (
     <div>
       <div className={classes.toolbar} />
       <Divider />
       <List>
-        {['All Tickets'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {['Open', 'Pending', 'On Hold', 'Solve'].map((text, index) => (
-          <ListItem button key={text}>
+        {['All Tickets', 'Open', 'Pending', 'On Hold', 'Solve'].map((text, index) => (
+          <ListItem
+            button
+            key={text}
+            onClick={() => handleOptionClick(text)}
+            selected={selectedOption === text}
+          >
             <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
             <ListItemText primary={text} />
           </ListItem>
@@ -117,7 +119,6 @@ function ResponsiveDrawer(props) {
         </Toolbar>
       </AppBar>
       <nav className={classes.drawer} aria-label="mailbox folders">
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Hidden smUp implementation="css">
           <Drawer
             container={container}
@@ -129,7 +130,7 @@ function ResponsiveDrawer(props) {
               paper: classes.drawerPaper,
             }}
             ModalProps={{
-              keepMounted: true, // Better open performance on mobile.
+              keepMounted: true,
             }}
           >
             {drawer}
@@ -148,6 +149,22 @@ function ResponsiveDrawer(props) {
         </Hidden>
       </nav>
       <main className={classes.content}>
+        <div className={classes.toolbar} />
+        {selectedOption === 'All Tickets' && (
+          <div>
+            <DataTable />
+          </div>
+        )}
+        {selectedOption === 'Open' && (
+          <div>
+            Content for Open Tickets
+          </div>
+        )}
+        {selectedOption === 'Pending' && (
+          <div>
+            Content for Pending Tickets
+          </div>
+        )}
       </main>
     </div>
   );
