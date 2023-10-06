@@ -21,5 +21,5 @@ CREATE TABLE tickets (
     last_message TIMESTAMP NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (requester_id) REFERENCES users(id)
+    -- FOREIGN KEY (requester_id) REFERENCES users(id)
 );
