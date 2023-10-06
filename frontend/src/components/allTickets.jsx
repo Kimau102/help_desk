@@ -49,6 +49,10 @@ const rows = [
 ];
 
 export default function DataTable() {
+  (async () => {
+    const resMsg = await fetch('/allTickets');
+    console.log(resMsg);
+  })();
   return (
     <div style={{ height: 400, width: '100%' }}>
       <DataGrid
