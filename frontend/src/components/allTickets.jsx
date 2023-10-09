@@ -3,29 +3,9 @@ import { DataGrid } from '@material-ui/data-grid';
 
 
 const columns = [
-  { field: 'id', headerName: 'ID', width: 90 },
   {
-    field: 'firstName',
-    headerName: 'First name',
-    width: 150,
-    editable: true,
-  },
-  {
-    field: 'lastName',
-    headerName: 'Last name',
-    width: 150,
-    editable: true,
-  },
-  {
-    field: 'age',
-    headerName: 'Age',
-    type: 'number',
-    width: 110,
-    editable: true,
-  },
-  {
-    field: 'fullName',
-    headerName: 'Full name',
+    field: 'requester',
+    headerName: 'Requester',
     description: 'This column has a value getter and is not sortable.',
     sortable: false,
     width: 160,
@@ -34,24 +14,63 @@ const columns = [
         params.getValue(params.id, 'lastName') || ''
       }`,
   },
+  // {
+  //   field: 'id',
+  //   headerName: 'ID',
+  //   width: 150 },
+  {
+    field: 'firstName',
+    headerName: 'First name',
+    width: 150,
+  },
+  {
+    field: 'lastName',
+    headerName: 'Last name',
+    width: 150,
+  },
+  {
+    field: 'modules',
+    headerName: 'Mdules',
+    width: 150,
+  },
+  {
+    field: 'subject',
+    headerName: 'Subject',
+    width: 150,
+  },
+  {
+    field: 'cs',
+    headerName: 'CS',
+    width: 150,
+  },
+  {
+    field: 'priority',
+    headerName: 'Priority',
+    width: 150,
+  },
+  {
+    field: 'status',
+    headerName: 'Status',
+    width: 150,
+  },
+  {
+    field: 'lastMessage',
+    headerName: 'Last Message',
+    width: 180,
+  },
 ];
 
 const rows = [
-  { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
-  { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-  { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
+  { id: 1, lastName: 'Snow', firstName: 'Jon', modules: 'Module A', subject: 'Issue 1', cs : 'Customer support needed', priority: 'High', status: 'Open', lastMessage: '12:00:00'},
+  { id: 2, lastName: 'Snow', firstName: 'Jon', modules: 'Module A', subject: 'Issue 1', cs : 'Customer support needed', priority: 'High', status: 'Open', lastMessage: '12:00:00'},
+  { id: 3, lastName: 'Snow', firstName: 'Jon', modules: 'Module A', subject: 'Issue 1', cs : 'Customer support needed', priority: 'High', status: 'Open', lastMessage: '12:00:00'},
   { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-  { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-  { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-  { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-  { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-  { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
 ];
 
 export default function DataTable() {
   (async () => {
     const resMsg = await fetch('/allTickets');
-    console.log(resMsg);
+    console.log(resMsg.json());
   })();
   return (
     <div style={{ height: 400, width: '100%' }}>

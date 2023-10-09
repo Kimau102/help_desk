@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   drawerColor: {
-    backgroundColor: 'rgb(66, 73, 100)',
+    backgroundColor: 'white',
   },
   listItemText: {
     color: 'white',
@@ -121,7 +121,7 @@ function ResponsiveDrawer(props) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap>
+          <Typography variant="h6" noWrap style={{ color: 'rgb(66, 73, 100)' }}>
             Help Desk
           </Typography>
         </Toolbar>
