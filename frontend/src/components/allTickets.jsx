@@ -51,7 +51,7 @@ export default function DataTable() {
         const fetchData = await res.json()
         const formattedData = fetchData.map(item => ({
           id: item.id,
-          requester: item.requester_id,
+          requester: item.requester,
           modules: item.modules,
           subject: item.subject,
           cs: item.cs,
@@ -78,10 +78,12 @@ export default function DataTable() {
     priority: ticket.priority,
     status: ticket.status,
     lastMessage: ticket.lastMessage
-  }));
+  }));
 
   return (
-    <div style={{ height: 400, width: '100%' }}>
+    <div>
+      <p>Total {rows.length} Tickets</p>
+      <div style={{ height: 400, width: '100%' }}>
       <DataGrid
         rows={rows}
         columns={columns}
@@ -89,6 +91,7 @@ export default function DataTable() {
         checkboxSelection
         disableSelectionOnClick
       />
-    </div>
+    </div></div>
+    
   );
 }

@@ -1,17 +1,12 @@
-import dotenv from 'dotenv';
-import mysql from 'mysql2';
+import dotenv from "dotenv";
+import mysql from "mysql2";
 
+dotenv.config();
 
-dotenv.config()
-
-const host = process.env.DB_LOACALHOST;
-const user = process.env.DB_USER;
-const password = process.env.DB_PASSWORD;
-const database = process.env.DB_DATABASE;
-
-export const connection = mysql.createConnection({
-  host,
-  user,
-  password,
-  database,
+export const pool = mysql.createPool({
+  host: process.env.DB_LOACALHOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
+  connectionLimit: 10,
 });
