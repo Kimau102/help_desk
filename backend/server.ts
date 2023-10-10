@@ -11,7 +11,7 @@ app.get('/allTickets', async (req: Request, res: Response) => {
 		  console.error('Error querying MySQL:', err);
 		  return;
 		}
-		res.json({ msg: 'ok'})
+		res.json(results)
 		console.log('Query results:', results);
 	  });
 	

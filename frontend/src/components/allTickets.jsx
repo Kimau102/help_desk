@@ -6,27 +6,7 @@ const columns = [
   {
     field: 'requester',
     headerName: 'Requester',
-    description: 'This column has a value getter and is not sortable.',
-    sortable: false,
     width: 160,
-    valueGetter: (params) =>
-      `${params.getValue(params.id, 'firstName') || ''} ${
-        params.getValue(params.id, 'lastName') || ''
-      }`,
-  },
-  // {
-  //   field: 'id',
-  //   headerName: 'ID',
-  //   width: 150 },
-  {
-    field: 'firstName',
-    headerName: 'First name',
-    width: 150,
-  },
-  {
-    field: 'lastName',
-    headerName: 'Last name',
-    width: 150,
   },
   {
     field: 'modules',
@@ -56,22 +36,50 @@ const columns = [
   {
     field: 'lastMessage',
     headerName: 'Last Message',
-    width: 180,
+    width: 200,
   },
 ];
 
-const rows = [
-  { id: 1, lastName: 'Snow', firstName: 'Jon', modules: 'Module A', subject: 'Issue 1', cs : 'Customer support needed', priority: 'High', status: 'Open', lastMessage: '12:00:00'},
-  { id: 2, lastName: 'Snow', firstName: 'Jon', modules: 'Module A', subject: 'Issue 1', cs : 'Customer support needed', priority: 'High', status: 'Open', lastMessage: '12:00:00'},
-  { id: 3, lastName: 'Snow', firstName: 'Jon', modules: 'Module A', subject: 'Issue 1', cs : 'Customer support needed', priority: 'High', status: 'Open', lastMessage: '12:00:00'},
-  { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-];
 
 export default function DataTable() {
-  (async () => {
-    const resMsg = await fetch('/allTickets');
-    console.log(resMsg.json());
-  })();
+  const [allTickets, setAllTickets] = React.useState([]);
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch('/allTickets')
+        const fetchData = await res.json()
+        const formattedData = fetchData.map(item => ({
+          id: item.id,
+          requester: item.requester_id,
+          modules: item.modules,
+          subject: item.subject,
+          cs: item.cs,
+          priority: item.priority,
+          status: item.status,
+          lastMessage: item.last_message
+        }))
+        setAllTickets(formattedData)
+      } catch (e) {
+        console.log(e)
+      }
+    }
+    fetchData();
+  }, [])
+
+  // console.log(allTickets)
+
+  const rows = allTickets.map(ticket => ({
+    id: ticket.id,
+    requester: ticket.requester,
+    modules: ticket.modules,
+    subject: ticket.subject,
+    cs: ticket.cs,
+    priority: ticket.priority,
+    status: ticket.status,
+    lastMessage: ticket.lastMessage
+  }));
+
   return (
     <div style={{ height: 400, width: '100%' }}>
       <DataGrid
