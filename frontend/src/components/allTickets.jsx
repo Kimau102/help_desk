@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { DataGrid } from '@material-ui/data-grid';
+import { SelectStatus } from './ticketsBar'
 
 const columns = [
   {
@@ -41,6 +42,15 @@ const columns = [
 
 export default function DataTable() {
   const [allTickets, setAllTickets] = React.useState([]);
+  const [selectPriority, setSelectPriority] = React.useState(''); //new
+
+  //new
+  const handlePriorityChange = (event) => {
+    setSelectPriority(event.target.value);
+  };
+  console.log(selectPriority)
+  //new
+
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -78,16 +88,17 @@ export default function DataTable() {
 
   return (
     <div>
+      <SelectStatus selectPriority={selectPriority} onPriorityChange={handlePriorityChange} /> {/*new*/}
       <p>Total {rows.length} Tickets</p>
       <div style={{ height: 800, width: '100%' }}>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        pageSize={20}
-        checkboxSelection
-        disableSelectionOnClick
-      />
-    </div></div>
-    
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          pageSize={20}
+          checkboxSelection
+          disableSelectionOnClick
+        />
+      </div></div>
+
   );
 }
