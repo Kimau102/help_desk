@@ -16,7 +16,8 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import DataTable from './allTickets';
+import FilterBar from './ticketsBar';
+import DataTable from './allTickets'
 
 const drawerWidth = 240;
 
@@ -160,6 +161,7 @@ function ResponsiveDrawer(props) {
         <div className={classes.toolbar} />
         {selectedOption === 'All Tickets' && (
           <div>
+            <FilterBar />
             <DataTable />
           </div>
         )}

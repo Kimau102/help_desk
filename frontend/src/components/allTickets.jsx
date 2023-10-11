@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { DataGrid } from '@material-ui/data-grid';
 
-
 const columns = [
   {
     field: 'requester',
@@ -10,7 +9,7 @@ const columns = [
   },
   {
     field: 'modules',
-    headerName: 'Mdules',
+    headerName: 'Modules',
     width: 150,
   },
   {
@@ -40,16 +39,15 @@ const columns = [
   },
 ];
 
-
 export default function DataTable() {
   const [allTickets, setAllTickets] = React.useState([]);
 
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch('/allTickets')
-        const fetchData = await res.json()
-        const formattedData = fetchData.map(item => ({
+        const res = await (await fetch('/tickets')).json()
+
+        const formattedData = res.map(item => ({
           id: item.id,
           requester: item.requester,
           modules: item.modules,
@@ -67,8 +65,6 @@ export default function DataTable() {
     fetchData();
   }, [])
 
-  // console.log(allTickets)
-
   const rows = allTickets.map(ticket => ({
     id: ticket.id,
     requester: ticket.requester,
@@ -83,11 +79,11 @@ export default function DataTable() {
   return (
     <div>
       <p>Total {rows.length} Tickets</p>
-      <div style={{ height: 400, width: '100%' }}>
+      <div style={{ height: 800, width: '100%' }}>
       <DataGrid
         rows={rows}
         columns={columns}
-        pageSize={5}
+        pageSize={20}
         checkboxSelection
         disableSelectionOnClick
       />
