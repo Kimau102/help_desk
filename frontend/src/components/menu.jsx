@@ -119,7 +119,7 @@ function ResponsiveDrawer(props) {
             onClick={handleDrawerToggle}
             className={classes.menuButton}
           >
-            <MenuIcon />
+            <MenuIcon style={{color: 'rgb(66, 73, 100)'}} />
           </IconButton>
           <Typography variant="h6" noWrap style={{ color: 'rgb(66, 73, 100)' }}>
             Help Desk

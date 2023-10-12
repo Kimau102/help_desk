@@ -39,18 +39,35 @@ const columns = [
     width: 150,
   },
   {
-    field: 'lastMessage',
+    field: 'last_message',
     headerName: 'Last Message',
     width: 200,
   },
 ];
 
-function SelectStatus(props) {
+function SelectPriority(props) {
   const { selectPriority, onPriorityChange } = props;
+
+  const [menuItem, setMenuItem] = React.useState('');
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await (await fetch('/tickets')).json()
+        const prioritySets = new Set()
+        res.forEach(item => {
+          prioritySets.add(item.priority)
+        })
+        setMenuItem(prioritySets)
+      } catch (e) {
+        console.log(e)
+      }
+    }
+    fetchData();
+  }, [])
 
   return (
     <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-      <InputLabel id="demo-select-small-label">All Priority</InputLabel>
+      <InputLabel id="demo-select-small-label">All Priorities</InputLabel>
       <Select
         labelId="demo-select-small-label"
         id="demo-select-small"
@@ -58,35 +75,63 @@ function SelectStatus(props) {
         label="All Priority"
         onChange={onPriorityChange}
       >
-        <MenuItem value={'All'}>All Status</MenuItem>
-        <MenuItem value={'Urgent'}>Urgent</MenuItem>
-        <MenuItem value={'High'}>High</MenuItem>
-        <MenuItem value={'Medium'}>Medium</MenuItem>
-        <MenuItem value={'Low'}>Low</MenuItem>
+        <MenuItem value={'All'}>All Priority</MenuItem>
+        {Array.from(menuItem).map(priority => (
+          <MenuItem key={priority} value={priority}>{priority}</MenuItem>
+        ))}
       </Select>
     </FormControl>
   );
 }
 
-export default function DataTable() {
-  const [allTickets, setAllTickets] = React.useState([]);
+function SelectModules(props) {
+  const { selectModules, onModuleChange } = props;
 
+  const [menuItem, setMenuItem] = React.useState('');
   React.useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await (await fetch('/tickets')).json()
+        const moduleSets = new Set()
+        res.forEach(item => {
+          moduleSets.add(item.modules)
+        })
+        setMenuItem(moduleSets)
+      } catch (e) {
+        console.log(e)
+      }
+    }
+    fetchData();
+  }, [])
 
-        const formattedData = res.map(item => ({
-          id: item.id,
-          requester: item.requester,
-          modules: item.modules,
-          subject: item.subject,
-          cs: item.cs,
-          priority: item.priority,
-          status: item.status,
-          lastMessage: item.last_message
-        }))
-        setAllTickets(formattedData)
+  return (
+    <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+      <InputLabel id="demo-select-small-label">All Modules</InputLabel>
+      <Select
+        labelId="demo-select-small-label"
+        id="demo-select-small"
+        value={selectModules}
+        label="All Priority"
+        onChange={onModuleChange}
+      >
+        <MenuItem value={'All'}>All Modules</MenuItem>
+        {Array.from(menuItem).map(modules => (
+          <MenuItem key={modules} value={modules}>{modules}</MenuItem>
+        ))}
+      </Select>
+    </FormControl>
+  );
+}
+
+
+export default function DataTable() {
+
+  const [allTickets, setAllTickets] = React.useState([]);
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await (await fetch('/tickets')).json()
+        setAllTickets(res)
       } catch (e) {
         console.log(e)
       }
@@ -95,29 +140,32 @@ export default function DataTable() {
   }, [])
 
   const [selectPriority, setSelectPriority] = React.useState('');
+  const [selectModules, setSelectModules] = React.useState('')
   const handlePriorityChange = (event) => {
     setSelectPriority(event.target.value);
   };
+  const handleModuleChange = (event) => {
+    setSelectModules(event.target.value);
+  };
 
-  const rows = allTickets.map(ticket => ({
-    id: ticket.id,
-    requester: ticket.requester,
-    modules: ticket.modules,
-    subject: ticket.subject,
-    cs: ticket.cs,
-    priority: ticket.priority,
-    status: ticket.status,
-    lastMessage: ticket.lastMessage
-  }));
-  
-  const filteredRows = rows.filter(function(ticket) {
-    if (selectPriority === '') {
-      return rows
-    } else if(selectPriority === 'All') {
-      return rows
-    } else {
-      return ticket.priority === selectPriority;
-    }
+  const filteredRows = allTickets.filter(function (ticket) {
+    if (selectPriority === '' || selectPriority === 'All' || selectModules === '' || selectModules === 'All') {
+      return true;
+    }else {
+        return ticket.priority === selectPriority && ticket.modules === selectModules;
+      }
+
+
+    
+    // if (selectPriority === '' || selectPriority === 'All' || selectModules === '' || selectModules === 'All') {
+    //   return true;
+    // } else if(selectPriority === ticket.priority) {
+    //   return ticket.priority === selectPriority;
+    // } else if(selectModules === ticket.modules) {
+    //   return ticket.modules === selectModules;
+    // } else {
+    //   return ticket.priority === selectPriority && ticket.modules === selectModules;
+    // }
   });
 
   return (
@@ -129,11 +177,12 @@ export default function DataTable() {
             <Button variant="contained" color="success" style={{ margin: 9 }}>
               + New Tickets
             </Button>
-            <SelectStatus selectPriority={selectPriority} onPriorityChange={handlePriorityChange} />
+            <SelectModules selectModules = {selectModules} onModuleChange= {handleModuleChange} />
+            <SelectPriority selectPriority={selectPriority} onPriorityChange={handlePriorityChange} />
           </div>
         </div>
       </div>
-      <p>Total {rows.length} Tickets</p>
+      <p>Total {allTickets.length} Tickets</p>
       <div style={{ height: 800, width: '100%' }}>
         <DataGrid
           rows={filteredRows}
