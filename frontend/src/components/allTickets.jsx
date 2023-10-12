@@ -149,25 +149,18 @@ export default function DataTable() {
   };
 
   const filteredRows = allTickets.filter(function (ticket) {
-    if (selectPriority === '' || selectPriority === 'All' || selectModules === '' || selectModules === 'All') {
+    if ((selectPriority === '' || selectPriority === 'All') && (selectModules === '' || selectModules === 'All')) {
       return true;
-    }else {
-        return ticket.priority === selectPriority && ticket.modules === selectModules;
-      }
-
-
-    
-    // if (selectPriority === '' || selectPriority === 'All' || selectModules === '' || selectModules === 'All') {
+    } 
+    else if (selectPriority === ticket.priority || selectModules === ticket.modules) {
+      return true;
+    }
+    // else if (selectPriority === ticket.priority && selectModules === ticket.modules) {
     //   return true;
-    // } else if(selectPriority === ticket.priority) {
-    //   return ticket.priority === selectPriority;
-    // } else if(selectModules === ticket.modules) {
-    //   return ticket.modules === selectModules;
-    // } else {
-    //   return ticket.priority === selectPriority && ticket.modules === selectModules;
     // }
+    return false;
   });
-
+  
   return (
     <div>
       <div>
@@ -177,7 +170,7 @@ export default function DataTable() {
             <Button variant="contained" color="success" style={{ margin: 9 }}>
               + New Tickets
             </Button>
-            <SelectModules selectModules = {selectModules} onModuleChange= {handleModuleChange} />
+            <SelectModules selectModules={selectModules} onModuleChange={handleModuleChange} />
             <SelectPriority selectPriority={selectPriority} onPriorityChange={handlePriorityChange} />
           </div>
         </div>
