@@ -10,6 +10,7 @@ export function SelectStatus(props) {
     const { selectPriority, onPriorityChange } = props;
     console.log('selectPriority: ', selectPriority)
     console.log('onPriorityChange: ', onPriorityChange)
+    console.log('props: ', props)
 
     return (
         <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
@@ -30,7 +31,7 @@ export function SelectStatus(props) {
     );
 }
 
-// function SelectStatus() {
+// export function SelectStatus() {
 //     const [selectPriority, setSelectPriority] = React.useState('');
 //     const handleChange = (event) => {
 //         setSelectPriority(event.target.value);
