@@ -1,10 +1,10 @@
 import React from 'react';
-import ResponsiveDrawer from './components/menu'
+import DrawerBar from './components/menu'
 
 const App = () => {
     return(
         <div>
-            <ResponsiveDrawer />
+            <DrawerBar />
         </div>
     )
 }

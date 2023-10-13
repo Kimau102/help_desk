@@ -42,7 +42,7 @@ export const columns = [
     },
   ];
   
-  export function SelectPriority(props) {
+  export function FilterPriority(props) {
     const { selectPriority, onPriorityChange } = props;
   
     const [menuItem, setMenuItem] = React.useState('');
@@ -81,7 +81,7 @@ export const columns = [
     );
   }
   
-  export function SelectModules(props) {
+  export function FilterModules(props) {
     const { selectModules, onModuleChange } = props;
   
     const [menuItem, setMenuItem] = React.useState('');

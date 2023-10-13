@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { DataGrid } from '@material-ui/data-grid';
 import Button from '@mui/material/Button';
-import { columns, SelectPriority, SelectModules } from '../modules/filter';
+import { columns, FilterPriority, FilterModules } from '../modules/filter';
 import TicketsInsight from './ticketsStatus';
 
-export default function DataTable() {
+export default function AllDataTable() {
   const [allTickets, setAllTickets] = React.useState([]);
   React.useEffect(() => {
     const fetchData = async () => {
@@ -44,8 +44,8 @@ export default function DataTable() {
             <Button variant="contained" color="success" style={{ margin: 9 }}>
               + New Tickets
             </Button>
-            <SelectModules selectModules={selectModules} onModuleChange={handleModuleChange} />
-            <SelectPriority selectPriority={selectPriority} onPriorityChange={handlePriorityChange} />
+            <FilterModules selectModules={selectModules} onModuleChange={handleModuleChange} />
+            <FilterPriority selectPriority={selectPriority} onPriorityChange={handlePriorityChange} />
           </div>
         </div>
       </div>

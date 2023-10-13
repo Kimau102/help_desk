@@ -15,7 +15,11 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import DataTable from './allTickets'
+import AllDataTable from './allTickets'
+import OpenDataTable from './openTickets'
+import PendingDataTable from './pendingTickets'
+import OnHoldDataTable from './onHoldTickets';
+import SolvedDataTable from './solvedTickets';
 
 const drawerWidth = 240;
 
@@ -60,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ResponsiveDrawer(props) {
+function DrawerBar(props) {
   const { window } = props;
   const classes = useStyles();
   const theme = useTheme();
@@ -80,7 +84,7 @@ function ResponsiveDrawer(props) {
       {/* <div className={classes.toolbar} /> */}
       <Divider />
       <List>
-        {['All Tickets', 'Open', 'Pending', 'On Hold', 'Solve'].map((text, index) => (
+        {['All Tickets', 'Open', 'Pending', 'On Hold', 'Solved'].map((text, index) => (
           <ListItem
             button
             key={text}
@@ -118,7 +122,7 @@ function ResponsiveDrawer(props) {
             onClick={handleDrawerToggle}
             className={classes.menuButton}
           >
-            <MenuIcon style={{color: 'rgb(66, 73, 100)'}} />
+            <MenuIcon style={{ color: 'rgb(66, 73, 100)' }} />
           </IconButton>
           <Typography variant="h6" noWrap style={{ color: 'rgb(66, 73, 100)' }}>
             Help Desk
@@ -159,17 +163,27 @@ function ResponsiveDrawer(props) {
         <div className={classes.toolbar} />
         {selectedOption === 'All Tickets' && (
           <div>
-            <DataTable />
+            <AllDataTable />
           </div>
         )}
         {selectedOption === 'Open' && (
           <div>
-            Content for Open Tickets
+            <OpenDataTable />
           </div>
         )}
         {selectedOption === 'Pending' && (
           <div>
-            Content for Pending Tickets
+            <PendingDataTable />
+          </div>
+        )}
+        {selectedOption === 'On Hold' && (
+          <div>
+            <OnHoldDataTable />
+          </div>
+        )}
+        {selectedOption === 'Solved' && (
+          <div>
+            <SolvedDataTable />
           </div>
         )}
       </main>
@@ -177,4 +191,4 @@ function ResponsiveDrawer(props) {
   );
 }
 
-export default ResponsiveDrawer;
+export default DrawerBar;
