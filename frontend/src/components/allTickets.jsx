@@ -149,16 +149,10 @@ export default function DataTable() {
   };
 
   const filteredRows = allTickets.filter(function (ticket) {
-    if ((selectPriority === '' || selectPriority === 'All') && (selectModules === '' || selectModules === 'All')) {
-      return true;
-    } 
-    else if (selectPriority === ticket.priority || selectModules === ticket.modules) {
-      return true;
-    }
-    // else if (selectPriority === ticket.priority && selectModules === ticket.modules) {
-    //   return true;
-    // }
-    return false;
+    const isPriorityAll = selectPriority === '' || selectPriority === 'All';
+    const isModulesAll = selectModules === '' || selectModules === 'All';
+  
+    return (isPriorityAll || selectPriority === ticket.priority) && (isModulesAll || selectModules === ticket.modules);
   });
   
   return (
@@ -175,7 +169,7 @@ export default function DataTable() {
           </div>
         </div>
       </div>
-      <p>Total {allTickets.length} Tickets</p>
+      <p>Total {filteredRows.length} Tickets</p>
       <div style={{ height: 800, width: '100%' }}>
         <DataGrid
           rows={filteredRows}
