@@ -1,5 +1,7 @@
 import express, { Request, Response } from 'express'
 import { pool } from '../util'
+import { formatDistanceToNow } from 'date-fns';
+import { RowDataPacket } from 'mysql2';
 
 export const ticketsRoutes = express.Router()
 
@@ -11,7 +13,7 @@ function getAllTickets(req: Request, res: Response) {
 			console.error('Error getting database connection:', err)
 			return res.status(500).json({ error: 'Database error' })
 		}
-
+		 
 		connection.query(
 			`SELECT
               t.id,
@@ -28,7 +30,7 @@ function getAllTickets(req: Request, res: Response) {
               users u
             ON
               t.requester_id = u.id;`,
-			(err, results) => {
+			(err, results: RowDataPacket[]) => {
 				connection.release()
 
 				if (err) {
@@ -36,7 +38,12 @@ function getAllTickets(req: Request, res: Response) {
 					return res.status(500).json({ error: 'Database error' })
 				}
 
-				res.json(results)
+				const formattedRes = results.map((result) => ({
+					...result,
+					last_message: formatDistanceToNow(result.last_message, { addSuffix: true }),
+				}));
+
+				res.json(formattedRes);
 				return undefined
 			}
 		)
