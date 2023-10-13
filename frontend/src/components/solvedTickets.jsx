@@ -8,8 +8,8 @@ export default function SolvedDataTable() {
         const fetchData = async () => {
             try {
                 const res = await (await fetch('/tickets')).json()
-                const mapSolvedTickets = res.filter(item => { return item.status === 'Solve' })
-                setSolvedTickets(mapSolvedTickets)
+                const filterSolvedTickets = res.filter(item => { return item.status === 'Solve' })
+                setSolvedTickets(filterSolvedTickets)
             } catch (e) {
                 console.log(e)
             }

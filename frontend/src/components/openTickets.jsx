@@ -8,8 +8,8 @@ export default function OpenDataTable() {
         const fetchData = async () => {
             try {
                 const res = await (await fetch('/tickets')).json()
-                const mapOpenTickets = res.filter(item => { return item.status === 'Open' })
-                setOpenTickets(mapOpenTickets)
+                const filterOpenTickets = res.filter(item => { return item.status === 'Open' })
+                setOpenTickets(filterOpenTickets)
             } catch (e) {
                 console.log(e)
             }

@@ -8,8 +8,8 @@ export default function PendingDataTable() {
         const fetchData = async () => {
             try {
                 const res = await (await fetch('/tickets')).json()
-                const mapPendingTickets = res.filter(item => { return item.status === 'Pending' })
-                setPendingTickets(mapPendingTickets)
+                const filterPendingTickets = res.filter(item => { return item.status === 'Pending' })
+                setPendingTickets(filterPendingTickets)
             } catch (e) {
                 console.log(e)
             }

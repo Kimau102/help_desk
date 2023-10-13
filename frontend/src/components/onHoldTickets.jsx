@@ -8,8 +8,8 @@ export default function OnHoldDataTable() {
         const fetchData = async () => {
             try {
                 const res = await (await fetch('/tickets')).json()
-                const mapOnHoldTickets = res.filter(item => { return item.status === 'On Hold' })
-                setOnHoldTickets(mapOnHoldTickets)
+                const filterOnHoldTickets = res.filter(item => { return item.status === 'On Hold' })
+                setOnHoldTickets(filterOnHoldTickets)
             } catch (e) {
                 console.log(e)
             }

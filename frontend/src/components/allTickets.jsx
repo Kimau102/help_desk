@@ -2,7 +2,7 @@ import * as React from 'react';
 import { DataGrid } from '@material-ui/data-grid';
 import Button from '@mui/material/Button';
 import { columns, FilterPriority, FilterModules } from '../modules/filter';
-import TicketsInsight from './ticketsStatus';
+import TicketsInsight from './ticketsInsight';
 
 export default function AllDataTable() {
   const [allTickets, setAllTickets] = React.useState([]);
