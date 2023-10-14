@@ -5,7 +5,6 @@ export default function TicketsInsight() {
 
     const [ticketsStatus, setTicketStatus] = React.useState([]);
     const [ticketsStatusLength, setTicketsStatusLength] = React.useState({});
-    console.log('ticketsStatusLength: ', ticketsStatusLength)
 
     React.useEffect(() => {
         const fetchData = async () => {
@@ -20,11 +19,8 @@ export default function TicketsInsight() {
                 const statusLengths = {};
                 Array.from(statusSets).forEach(status => {
                     statusLengths[status] = res.filter(item => item.status === status).length;
-                    console.log('status:', status)
                 });
                 setTicketsStatusLength(statusLengths);
-                console.log('statusLengths:', statusLengths)
-
             } catch (e) {
                 console.log(e);
             }
