@@ -3,6 +3,6 @@ import { TicketDataTable } from './filterStatusTickets';
 
 export default function OpenDataTable() {
     return (
-        <TicketDataTable status="On Hold" />
+        <TicketDataTable status = 'On Hold' />
     );
 }

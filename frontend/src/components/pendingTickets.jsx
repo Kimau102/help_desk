@@ -3,6 +3,6 @@ import { TicketDataTable } from './filterStatusTickets';
 
 export default function PendingDataTable() {
     return (
-        <TicketDataTable status="Pending" />
+        <TicketDataTable status = 'Pending' />
     );
 }
