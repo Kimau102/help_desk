@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TicketDataTable } from './filterStatusTickets';
+import { TicketDataTable } from './TicketDataTable';
 
 export default function PendingDataTable() {
     return (

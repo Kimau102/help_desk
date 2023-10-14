@@ -31,7 +31,7 @@ export default function TicketsInsight() {
     return (
         <div>
             <h3>All Tickets Insight</h3>
-            <div style={{ display: 'flex' }}>
+            <div style={{ display: 'flex', width: '100%' }}>
                 {ticketsStatus.map(status => (
                     <Box
                         key={status}
@@ -41,7 +41,7 @@ export default function TicketsInsight() {
                             borderRadius: 2,
                             m: 2,
                             p: 2,
-                            minWidth: 200,
+                            minWidth: 150,
                         }}
                     >
                         <Box sx={{ color: 'text.secondary' }}>{status}</Box>
