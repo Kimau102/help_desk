@@ -20,6 +20,8 @@ import OpenDataTable from './openTickets'
 import PendingDataTable from './pendingTickets'
 import OnHoldDataTable from './onHoldTickets';
 import SolvedDataTable from './solvedTickets';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+// import { BrowserRouter as Router, Link } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -69,7 +71,7 @@ function DrawerBar(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [selectedOption, setSelectedOption] = React.useState('All tickets')
+  const [selectedOption, setSelectedOption] = React.useState('')
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -85,15 +87,19 @@ function DrawerBar(props) {
       <Divider />
       <List>
         {['All Tickets', 'Open', 'Pending', 'On Hold', 'Solved'].map((text, index) => (
-          <ListItem
-            button
-            key={text}
-            onClick={() => handleOptionClick(text)}
-            selected={selectedOption === text}
-          >
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} className={classes.listItemText} />
-          </ListItem>
+          <Router key={text}>
+            <Link to={text.toLowerCase().replace(/ /g, '-')} style={{ textDecoration: 'none' }}>
+              <ListItem
+                button
+                key={text}
+                onClick={() => handleOptionClick(text)}
+                selected={selectedOption === text}
+              >
+                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+                <ListItemText primary={text} className={classes.listItemText} />
+              </ListItem>
+            </Link>
+          </Router>
         ))}
       </List>
       <Divider />
@@ -161,31 +167,29 @@ function DrawerBar(props) {
       </nav>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        {selectedOption === 'All Tickets' && (
-          <div>
-            <AllDataTable />
-          </div>
-        )}
-        {selectedOption === 'Open' && (
-          <div>
-            <OpenDataTable />
-          </div>
-        )}
-        {selectedOption === 'Pending' && (
-          <div>
-            <PendingDataTable />
-          </div>
-        )}
-        {selectedOption === 'On Hold' && (
-          <div>
-            <OnHoldDataTable />
-          </div>
-        )}
-        {selectedOption === 'Solved' && (
-          <div>
-            <SolvedDataTable />
-          </div>
-        )}
+        <Router>
+          <Routes>
+            {['All Tickets', 'Open', 'Pending', 'On Hold', 'Solved'].map((text, index) => (
+              <Route
+                key={text}
+                path='/'
+                element={
+                  <div>
+                    {selectedOption === text && (
+                      <>
+                        {text === 'All Tickets' && <AllDataTable />}
+                        {text === 'Open' && <OpenDataTable />}
+                        {text === 'Pending' && <PendingDataTable />}
+                        {text === 'On Hold' && <OnHoldDataTable />}
+                        {text === 'Solved' && <SolvedDataTable />}
+                      </>
+                    )}
+                  </div>
+                }
+              />
+            ))}
+          </Routes>
+        </Router>
       </main>
     </div>
   );

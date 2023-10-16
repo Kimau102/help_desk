@@ -1,5 +1,5 @@
 import React from 'react';
-import { TicketDataTable } from './TicketDataTable';
+import { TicketDataTable } from './ticketDataTable';
 
 export default function AllDataTable() {
   return (
