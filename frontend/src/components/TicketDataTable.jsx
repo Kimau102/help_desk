@@ -1,10 +1,8 @@
 import * as React from 'react';
 import { DataGrid } from '@material-ui/data-grid';
-// import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import { columns, FilterPriority, FilterModules } from '../modules/filter';
 import TicketsInsight from './ticketsInsight';
-// import NewTicketComponent from './newTicket'
 
 export function TicketDataTable({ status, defaultPriority, defaultModules, showNewTicketButton, showTicketsInsight }) {
     const [tickets, setTickets] = React.useState([]);
@@ -50,17 +48,6 @@ export function TicketDataTable({ status, defaultPriority, defaultModules, showN
                             <Button variant="contained" color="success" style={{ margin: 9 }}>
                                 + New Tickets
                             </Button>
-                            // <Router>
-                            //     <Link to='/newTicket'>
-                            //         <Button variant="contained" color="success" style={{ margin: 9 }}>
-                            //             + New Tickets
-                            //         </Button>
-                            //     </Link>
-                            //     <Routes>
-                            //         <Route path='/newTicket' element={<NewTicketComponent />}>
-                            //         </Route>
-                            //     </Routes>
-                            // </Router>
                         )}
                         <FilterModules selectModules={selectModules} onModuleChange={handleModuleChange} />
                         <FilterPriority selectPriority={selectPriority} onPriorityChange={handlePriorityChange} />
