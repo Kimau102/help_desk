@@ -16,7 +16,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { TicketDataTable } from './ticketDataTable';
-import { BrowserRouter as Router, Routes, Route, Link, BrowserRouter } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -80,7 +80,6 @@ function DrawerBar(props) {
     <div>
       <Divider />
       <List>
-        <Router>
           {['All Tickets', 'Open', 'Pending', 'On Hold', 'Solved'].map((text, index) => (
             <Link to={'/' + text.toLowerCase().replace(/ /g, '-')} style={{ textDecoration: 'none' }}>
               <ListItem
@@ -94,7 +93,6 @@ function DrawerBar(props) {
               </ListItem>
             </Link>
           ))}
-        </Router>
       </List>
       <Divider />
       <List>
@@ -129,49 +127,48 @@ function DrawerBar(props) {
           </Typography>
         </Toolbar>
       </AppBar>
-      <nav className={classes.drawer} aria-label="mailbox folders">
-        <Hidden smUp implementation="css">
-          <Drawer
-            container={container}
-            variant="temporary"
-            anchor={theme.direction === 'rtl' ? 'right' : 'left'}
-            open={mobileOpen}
-            onClose={handleDrawerToggle}
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-            ModalProps={{
-              keepMounted: true,
-            }}
-          >
-            {drawer}
-          </Drawer>
-        </Hidden>
-        <Hidden xsDown implementation="css">
-          <Drawer
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-            variant="permanent"
-            open
-          >
-            {drawer}
-          </Drawer>
-        </Hidden>
-      </nav>
-      <main className={classes.content}>
-        <div className={classes.toolbar} />
-        <BrowserRouter>
+      <Router>
+        <nav className={classes.drawer} aria-label="mailbox folders">
+          <Hidden smUp implementation="css">
+            <Drawer
+              container={container}
+              variant="temporary"
+              anchor={theme.direction === 'rtl' ? 'right' : 'left'}
+              open={mobileOpen}
+              onClose={handleDrawerToggle}
+              classes={{
+                paper: classes.drawerPaper,
+              }}
+              ModalProps={{
+                keepMounted: true,
+              }}
+            >
+              {drawer}
+            </Drawer>
+          </Hidden>
+          <Hidden xsDown implementation="css">
+            <Drawer
+              classes={{
+                paper: classes.drawerPaper,
+              }}
+              variant="permanent"
+              open
+            >
+              {drawer}
+            </Drawer>
+          </Hidden>
+        </nav>
+        <main className={classes.content}>
+          <div className={classes.toolbar} />
           <Routes>
-            <Route path='all-tickets' element={<TicketDataTable status='All' showNewTicketButton={true} showTicketsInsight={true} />} />
-            <Route path='open' element={<TicketDataTable status='Open' />} />
-            <Route path='pending' element={<TicketDataTable status='Pending' />} />
-            <Route path='on-hold' element={<TicketDataTable status='On Hold' />} />
-            <Route path='solved' element={<TicketDataTable status='Solve' />} />
+            <Route path='/all-tickets' element={<TicketDataTable status='All' showNewTicketButton={true} showTicketsInsight={true} />} />
+            <Route path='/open' element={<TicketDataTable status='Open' defaultPriority='All' />} />
+            <Route path='/pending' element={<TicketDataTable status='Pending' />} />
+            <Route path='/on-hold' element={<TicketDataTable status='On Hold' />} />
+            <Route path='/solved' element={<TicketDataTable status='Solve' />} />
           </Routes>
-        </BrowserRouter>
-
-      </main>
+        </main>
+      </Router>
     </div>
   );
 }
