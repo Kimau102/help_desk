@@ -9,7 +9,11 @@ loginRoutes.post('/', loginAC)
 async function loginAC(req: Request, res: Response) {
 	try {
 		const [result] = await pool.query<RowDataPacket[]>(
-			`SELECT users.id, users.email, users.password, users.admin_authorization, users. client_authorization from users where users.email = ?`,
+			`SELECT users.id,
+            users.email,
+            users.password,
+            users.admin_authorization,
+            users. client_authorization from users where users.email = ?`,
             [req.body.email])
         
         if(result.length > 0) {
@@ -18,8 +22,6 @@ async function loginAC(req: Request, res: Response) {
             )
             if(checkLogin === true) {
                 req.session.user_email = req.body.email
-                console.log('success and ', 'user_email:',req.session.user_email)
-                console.log('result:', result)
                 res.status(200).json({
                     user_id: result[0].id,
                     email: result[0].email,

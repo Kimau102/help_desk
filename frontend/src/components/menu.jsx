@@ -19,7 +19,7 @@ import { TicketDataTable } from './ticketDataTable';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import NewTicketComponent from './newTicketPage'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import LoginForm from './loginForm'
+import LoginPageContainer from './loginPage'
 
 const drawerWidth = 240;
 
@@ -115,8 +115,9 @@ function DrawerBar(props) {
     <div className={classes.root}>
       <CssBaseline />
       <Router>
-        <AppBar position="fixed" className={`${classes.appBar} ${classes.drawerColor}`}>
-          <Toolbar>
+      <AppBar position="fixed" className={`${classes.appBar} ${classes.drawerColor}`}>
+        <Toolbar style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
             <IconButton
               color="inherit"
               aria-label="open drawer"
@@ -129,11 +130,12 @@ function DrawerBar(props) {
             <Typography variant="h6" noWrap style={{ color: 'rgb(66, 73, 100)' }}>
               Help Desk
             </Typography>
-            <Link to='/login'>
-              <ExitToAppIcon />
-            </Link>
-          </Toolbar>
-        </AppBar>
+          </div>
+          <Link to='/login' style={{ textDecoration: 'none', color: 'rgb(66, 73, 100)' }}>
+            <ExitToAppIcon />
+          </Link>
+        </Toolbar>
+      </AppBar>
         <nav className={classes.drawer} aria-label="mailbox folders">
           <Hidden smUp implementation="css">
             <Drawer
@@ -173,7 +175,7 @@ function DrawerBar(props) {
             <Route path='/pending' element={<TicketDataTable status='Pending' />} />
             <Route path='/on-hold' element={<TicketDataTable status='On Hold' />} />
             <Route path='/solved' element={<TicketDataTable status='Solve' />} />
-            <Route path='/login' element={<LoginForm />} />
+            <Route path='/login' element={<LoginPageContainer />} />
           </Routes>
         </main>
       </Router>

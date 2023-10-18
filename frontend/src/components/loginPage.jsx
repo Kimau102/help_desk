@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Paper, TextField, Button, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+// import HandleLogout from './logout'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     display: 'flex',
     justifyContent: 'center',
@@ -14,7 +15,16 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function LoginForm() {
+function LoginedPage() {
+  return (
+    <div>
+      <h1>Already Logged In</h1>
+      <Button>Logout</Button>
+    </div>
+  );
+}
+
+function LoginPage() {
   const classes = useStyles();
   const [formData, setFormData] = useState({
     email: '',
@@ -40,10 +50,9 @@ function LoginForm() {
       body: JSON.stringify(formData)
     })
     if (res.status === 200) {
-      console.log(await res.json())
-      console.log('login success')
+      console.log('login success');
     } else {
-      console.log('login failure')
+      console.log('login failure');
     }
     setFormData({
       email: '',
@@ -88,6 +97,25 @@ function LoginForm() {
       </Paper>
     </div>
   );
-};
+}
 
-export default LoginForm;
+function LoginPageContainer() {
+  const [loginStatus, setLoginStatus] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      const res = await (await fetch('/checkIsLogin')).json();
+      if (res.login_status === true) {
+        setLoginStatus(true);
+      }
+    })()
+  }, []);
+
+  return (
+    <div>
+      {loginStatus ? <LoginedPage /> : <LoginPage />}
+    </div>
+  );
+}
+
+export default LoginPageContainer;
