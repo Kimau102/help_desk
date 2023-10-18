@@ -59,15 +59,6 @@ VALUES
          ELSE 'Closed'
      END, 
      CURRENT_TIMESTAMP);
-
-
---for phpMyAdmin
-INSERT INTO tickets (requester_id, modules, subject, cs, priority, status)
-VALUES
-    (5, 'Module A', 'Issue 1', 'Customer support needed', 'High', 'Open'),
-    (3, 'Module B', 'Issue 2', 'Technical question', 'Medium', 'In Progress'),
-    (5, 'Module A', 'Issue 3', 'Billing inquiry', 'Low', 'Closed'),
-    (1, 'Module C', 'Issue 4', 'Product feedback', 'High', 'Open'),
-    (4, 'Module E', 'Issue 5', 'Product feedback', 'High', 'Open'),
-    (1, 'Module F', 'Issue 6', 'Product feedback', 'High', 'Open'),
-    (2, 'Module B', 'Issue 7', 'Technical issue', 'Medium', 'In Progress');
+-- update admin_authorization
+UPDATE users
+SET client_authorization = CASE WHEN admin_authorization = 1 THEN 0 ELSE 1 END;

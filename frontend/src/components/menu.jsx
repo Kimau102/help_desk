@@ -17,6 +17,9 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { TicketDataTable } from './ticketDataTable';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import NewTicketComponent from './newTicketPage'
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import LoginForm from './loginForm'
 
 const drawerWidth = 240;
 
@@ -80,19 +83,19 @@ function DrawerBar(props) {
     <div>
       <Divider />
       <List>
-          {['All Tickets', 'Open', 'Pending', 'On Hold', 'Solved'].map((text, index) => (
-            <Link to={'/' + text.toLowerCase().replace(/ /g, '-')} style={{ textDecoration: 'none' }}>
-              <ListItem
-                button
-                key={text}
-                onClick={() => handleOptionClick(text)}
-                selected={selectedOption === text}
-              >
-                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                <ListItemText primary={text} className={classes.listItemText} />
-              </ListItem>
-            </Link>
-          ))}
+        {['All Tickets', 'Open', 'Pending', 'On Hold', 'Solved'].map((text, index) => (
+          <Link to={'/' + text.toLowerCase().replace(/ /g, '-')} style={{ textDecoration: 'none' }}>
+            <ListItem
+              button
+              key={text}
+              onClick={() => handleOptionClick(text)}
+              selected={selectedOption === text}
+            >
+              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+              <ListItemText primary={text} className={classes.listItemText} />
+            </ListItem>
+          </Link>
+        ))}
       </List>
       <Divider />
       <List>
@@ -111,23 +114,26 @@ function DrawerBar(props) {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar position="fixed" className={`${classes.appBar} ${classes.drawerColor}`}>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            className={classes.menuButton}
-          >
-            <MenuIcon style={{ color: 'rgb(66, 73, 100)' }} />
-          </IconButton>
-          <Typography variant="h6" noWrap style={{ color: 'rgb(66, 73, 100)' }}>
-            Help Desk
-          </Typography>
-        </Toolbar>
-      </AppBar>
       <Router>
+        <AppBar position="fixed" className={`${classes.appBar} ${classes.drawerColor}`}>
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="start"
+              onClick={handleDrawerToggle}
+              className={classes.menuButton}
+            >
+              <MenuIcon style={{ color: 'rgb(66, 73, 100)' }} />
+            </IconButton>
+            <Typography variant="h6" noWrap style={{ color: 'rgb(66, 73, 100)' }}>
+              Help Desk
+            </Typography>
+            <Link to='/login'>
+              <ExitToAppIcon />
+            </Link>
+          </Toolbar>
+        </AppBar>
         <nav className={classes.drawer} aria-label="mailbox folders">
           <Hidden smUp implementation="css">
             <Drawer
@@ -158,14 +164,16 @@ function DrawerBar(props) {
             </Drawer>
           </Hidden>
         </nav>
-        <main className={classes.content}>
+        <main id='drawerContentContainer' className={classes.content}>
           <div className={classes.toolbar} />
           <Routes>
             <Route path='/all-tickets' element={<TicketDataTable status='All' showNewTicketButton={true} showTicketsInsight={true} />} />
+            <Route path='/all-tickets/new-ticket' element={<NewTicketComponent />} />
             <Route path='/open' element={<TicketDataTable status='Open' defaultPriority='All' />} />
             <Route path='/pending' element={<TicketDataTable status='Pending' />} />
             <Route path='/on-hold' element={<TicketDataTable status='On Hold' />} />
             <Route path='/solved' element={<TicketDataTable status='Solve' />} />
+            <Route path='/login' element={<LoginForm />} />
           </Routes>
         </main>
       </Router>
