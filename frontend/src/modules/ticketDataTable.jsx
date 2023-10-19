@@ -6,6 +6,7 @@ import TicketsInsight from './ticketsInsight'
 import { Link } from 'react-router-dom'
 import LoginPageContainer from './loginPage'
 import CircularIndeterminate from '../components/loading'
+import { useCheckIsLogin } from '../components/guardLoginLayout'
 
 export function TicketDataTable({
 	status,
@@ -24,8 +25,8 @@ export function TicketDataTable({
 	const [selectModules, setSelectModules] = React.useState(
 		defaultModules || ''
 	)
-	const [userData, setUserData] = React.useState([])
-	const [loading, setLoading] = React.useState(true)
+	const { loading, loginStatus, clientAuthorization, adminAuthorization } =
+		useCheckIsLogin()
 
 	React.useEffect(() => {
 		const fetchData = async () => {
@@ -42,20 +43,6 @@ export function TicketDataTable({
 		}
 		fetchData()
 	}, [status])
-
-	React.useEffect(() => {
-		;(async () => {
-			const res = await (await fetch('/checkIsLogin')).json()
-			if (res.login_status === true) {
-				setUserData(res)
-			}
-			setLoading(false)
-		})()
-	}, [])
-
-	login_status = userData.login_status
-	client_authorization = userData.client_authorization
-	admin_authorization = userData.client_authorization
 
 	const handlePriorityChange = (event) => {
 		setSelectPriority(event.target.value)
@@ -79,14 +66,15 @@ export function TicketDataTable({
 		<div>
 			{loading ? (
 				<CircularIndeterminate />
-			) : login_status ? (
+			) : loginStatus ? (
 				<div>
 					<div>
 						{showTicketsInsight && <TicketsInsight />}
 						<h3>Tickets List</h3>
 						<div>
 							<div style={{ height: 52, width: '100%' }}>
-								{userData.client_authorization === 1 &&
+								{clientAuthorization === 1 &&
+									adminAuthorization === 0 &&
 									showNewTicketButton && (
 										<>
 											<Link to='./new-ticket'>
