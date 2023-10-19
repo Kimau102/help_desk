@@ -1,5 +1,5 @@
 import React from 'react'
-import DrawerBar from './components/menu'
+import DrawerBar from './modules/menu'
 
 const App = () => {
 	return <DrawerBar />

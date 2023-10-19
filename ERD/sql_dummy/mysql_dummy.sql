@@ -1,11 +1,11 @@
 -- Insert data into the users table
 INSERT INTO users (first_name, last_name, email, password, admin_authorization, address)
 VALUES
-    ('John', 'Doe', 'john@example.com', 'password123', true, '123 Main St'),
-    ('Jane', 'Smith', 'jane@example.com', 'securepass', false, '456 Elm St'),
-    ('Michael', 'Johnson', 'michael@example.com', 'pass123', true, '789 Oak St'),
-    ('Sarah', 'Brown', 'sarah@example.com', 'mysecret', false, '101 Maple St'),
-    ('David', 'Wilson', 'david@example.com', 'secret123', true, '202 Pine St');
+    ('John', 'Doe', 'john@example.com', 'password123', true, False, '123 Main St'),
+    ('Jane', 'Smith', 'jane@example.com', 'securepass', false, true, '456 Elm St'),
+    ('Michael', 'Johnson', 'michael@example.com', 'pass123', true, false '789 Oak St'),
+    ('Sarah', 'Brown', 'sarah@example.com', 'mysecret', false, true, '101 Maple St'),
+    ('David', 'Wilson', 'david@example.com', 'secret123', true, false '202 Pine St');
 
 -- Insert data into the tickets table
 INSERT INTO tickets (requester_id, modules, subject, cs, priority, status, last_message)
@@ -51,14 +51,14 @@ VALUES
          ELSE 'Low'
      END, 
      CASE
-         WHEN FLOOR(RAND() * 3) = 0 THEN 'Open'
-         WHEN FLOOR(RAND() * 3) = 1 THEN 'Processing'
-         WHEN FLOOR(RAND() * 3) = 1 THEN 'Pending'
-         WHEN FLOOR(RAND() * 3) = 1 THEN 'On Hold'
-         WHEN FLOOR(RAND() * 3) = 1 THEN 'Solve'
+         WHEN FLOOR(RAND() * 6) = 0 THEN 'Open'
+         WHEN FLOOR(RAND() * 6) = 1 THEN 'Processing'
+         WHEN FLOOR(RAND() * 6) = 1 THEN 'Pending'
+         WHEN FLOOR(RAND() * 6) = 1 THEN 'On Hold'
+         WHEN FLOOR(RAND() * 6) = 1 THEN 'Solve'
          ELSE 'Closed'
      END, 
      CURRENT_TIMESTAMP);
 -- update admin_authorization
-UPDATE users
-SET client_authorization = CASE WHEN admin_authorization = 1 THEN 0 ELSE 1 END;
+-- UPDATE users
+-- SET client_authorization = CASE WHEN admin_authorization = 1 THEN 0 ELSE 1 END;

@@ -228,12 +228,7 @@ function DrawerBar(props) {
 						/>
 						<Route
 							path='/open'
-							element={
-								<TicketDataTable
-									status='Open'
-									defaultPriority='All'
-								/>
-							}
+							element={<TicketDataTable status='Open' />}
 						/>
 						<Route
 							path='/pending'
@@ -248,6 +243,7 @@ function DrawerBar(props) {
 							element={<TicketDataTable status='Solve' />}
 						/>
 						<Route path='/login' element={<LoginPageContainer />} />
+						<Route path='/' element={<LoginPageContainer />} />
 					</Routes>
 				</main>
 			</Router>

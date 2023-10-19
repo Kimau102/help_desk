@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Paper, TextField, Button, Typography } from '@mui/material'
 import { makeStyles } from '@mui/styles'
+import CircularIndeterminate from '../components/loading'
 
 const useStyles = makeStyles(() => ({
 	root: {
@@ -139,7 +140,7 @@ function LoginPageContainer() {
 	return (
 		<div>
 			{loading ? (
-				<p>Loading...</p>
+				<CircularIndeterminate />
 			) : loginStatus ? (
 				<LoginedPage />
 			) : (

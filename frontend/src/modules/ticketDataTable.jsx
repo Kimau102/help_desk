@@ -1,10 +1,11 @@
 import * as React from 'react'
 import { DataGrid } from '@material-ui/data-grid'
 import Button from '@mui/material/Button'
-import { columns, FilterPriority, FilterModules } from '../modules/filter'
+import { columns, FilterPriority, FilterModules } from '../components/filter'
 import TicketsInsight from './ticketsInsight'
 import { Link } from 'react-router-dom'
 import LoginPageContainer from './loginPage'
+import CircularIndeterminate from '../components/loading'
 
 export function TicketDataTable({
 	status,
@@ -77,7 +78,7 @@ export function TicketDataTable({
 	return (
 		<div>
 			{loading ? (
-				<p>Loading...</p>
+				<CircularIndeterminate />
 			) : login_status ? (
 				<div>
 					<div>
