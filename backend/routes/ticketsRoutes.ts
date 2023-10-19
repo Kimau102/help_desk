@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express'
 import { pool } from '../util'
-import { formatDistanceToNow } from 'date-fns';
-import { RowDataPacket } from 'mysql2';
+import { formatDistanceToNow } from 'date-fns'
+import { RowDataPacket } from 'mysql2'
 import { isLoggedInAPI } from '../guard'
 
 export const ticketsRoutes = express.Router()
@@ -25,12 +25,15 @@ async function getAllTickets(req: Request, res: Response) {
 		            INNER JOIN
 		              users u
 		            ON
-		              t.requester_id = u.id;`)
+		              t.requester_id = u.id;`
+		)
 		const formattedRes = result.map((result) => ({
 			...result,
-			last_message: formatDistanceToNow(result.last_message, { addSuffix: true }),
-		}));
-		res.json(formattedRes);
+			last_message: formatDistanceToNow(result.last_message, {
+				addSuffix: true
+			})
+		}))
+		res.json(formattedRes)
 	} catch (err) {
 		console.error('Error querying MySQL:', err)
 		res.status(500).json({ error: 'Database error' })

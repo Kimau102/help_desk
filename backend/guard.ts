@@ -8,6 +8,6 @@ export const isLoggedInAPI = (
 	if (req.session?.user_email) {
 		next()
 	} else {
-        return
+		return
 	}
 }
