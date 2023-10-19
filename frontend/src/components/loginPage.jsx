@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Paper, TextField, Button, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-// import HandleLogout from './logout'
 
 const useStyles = makeStyles(() => ({
   root: {
     display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
+    // justifyContent: 'center',
+    // alignItems: 'center',
     height: '200px',
   },
   formContainer: {
@@ -16,12 +15,33 @@ const useStyles = makeStyles(() => ({
 }));
 
 function LoginedPage() {
+  const handleLogout = async (event) => {
+    event.preventDefault()
+    const res = await fetch('/logout', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    if (res.status === 200) {
+      window.location.href = '/login';
+    }
+  }
+
+  const [loginedInfo, setLoginedInfo] = useState([])
+
+  useEffect(() => {
+    (async () => {
+      const res = await (await fetch('/checkIsLogin')).json()
+      setLoginedInfo(res)
+    })()
+  },[])
   return (
     <div>
-      <h1>Already Logged In</h1>
-      <Button>Logout</Button>
+      <h1>Hi, {loginedInfo.user_first_name} {loginedInfo.user_last_name}</h1>
+      <Button onClick={handleLogout}>Logout</Button>
     </div>
-  );
+  )
 }
 
 function LoginPage() {
@@ -50,6 +70,7 @@ function LoginPage() {
       body: JSON.stringify(formData)
     })
     if (res.status === 200) {
+      window.location.href = '/login';
       console.log('login success');
     } else {
       console.log('login failure');

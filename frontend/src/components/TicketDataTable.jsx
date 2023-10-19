@@ -5,10 +5,11 @@ import { columns, FilterPriority, FilterModules } from '../modules/filter';
 import TicketsInsight from './ticketsInsight';
 import { Link } from 'react-router-dom';
 
-export function TicketDataTable({ status, defaultPriority, defaultModules, showNewTicketButton, showTicketsInsight }) {
+export function TicketDataTable({ status, defaultPriority, defaultModules, showNewTicketButton, showTicketsInsight, client_authorization, admin_authorization}) {
     const [tickets, setTickets] = React.useState([]);
     const [selectPriority, setSelectPriority] = React.useState(defaultPriority || '');
     const [selectModules, setSelectModules] = React.useState(defaultModules || '');
+    const [userData, setUserData] = React.useState([]);
 
     React.useEffect(() => {
         const fetchData = async () => {
@@ -22,6 +23,17 @@ export function TicketDataTable({ status, defaultPriority, defaultModules, showN
         };
         fetchData();
     }, [status]);
+
+    React.useEffect(() => {
+        (async () => {
+            const res = await (await fetch('/checkIsLogin')).json();
+            if (res.login_status === true) {
+                setUserData(res);
+            }
+        })()
+    }, []);
+    client_authorization = userData.client_authorization
+    admin_authorization = userData.client_authorization
 
     const handlePriorityChange = (event) => {
         setSelectPriority(event.target.value);
@@ -45,7 +57,7 @@ export function TicketDataTable({ status, defaultPriority, defaultModules, showN
                 <h3>Tickets List</h3>
                 <div>
                     <div style={{ height: 52, width: '100%' }}>
-                        {showNewTicketButton && (
+                        {userData.client_authorization === 1 && showNewTicketButton && (
                             <>
                                 <Link to='./new-ticket'>
                                     <Button variant="contained" color="success" style={{ margin: 9 }}>

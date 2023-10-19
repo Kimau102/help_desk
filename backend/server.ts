@@ -26,6 +26,8 @@ app.get('/checkIsLogin', async (req, res) => {
 	if (req.session.user_email) {
 		const [userInfo] = await pool.query(
 			`SELECT users.id,
+			users.first_name,
+			users.last_name,
 			users.email,
 			users.admin_authorization,
 			users.client_authorization,
@@ -34,6 +36,8 @@ app.get('/checkIsLogin', async (req, res) => {
 		res.json({
 			login_status: true,
 			user_id: userInfo[0].id,
+			user_first_name: userInfo[0].first_name,
+			user_last_name: userInfo[0].last_name,
 			email: userInfo[0].email,
 			admin_authorization: userInfo[0].admin_authorization,
 			client_authorization: userInfo[0].client_authorization,
@@ -44,15 +48,19 @@ app.get('/checkIsLogin', async (req, res) => {
 	}
 })
 
-app.post('/logout', (req, res) => {
-	req.session.destroy((err) => {
-		if (err) {
-			console.error('Error destroying session:', err);
-			res.status(500).json({ error: 'Logout failed' });
-		} else {
-			res.status(200).json({ message: 'Logout successful' });
-		}
-	});
+app.post('/logout', async (req, res) => {
+	if (req.session.user_email) {
+		req.session.destroy((err) => {
+			if (err) {
+				console.error('Error destroying session:', err);
+				res.status(500).json({ error: 'Logout failed' });
+			} else {
+				res.status(200).json({ message: 'Logout successful' });
+			}
+		});
+	} else {
+		res.json({msg: 'not login yet'})
+	}
 });
 
 app.use('/tickets', ticketsRoutes)
