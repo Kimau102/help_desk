@@ -8,7 +8,7 @@ export default function TicketsInsight() {
 	React.useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const res = await (await fetch('/tickets')).json()
+				const res = await (await fetch('/api//tickets')).json()
 				const statusSets = new Set()
 				res.forEach((item) => {
 					statusSets.add(item.status)

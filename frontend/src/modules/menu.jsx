@@ -21,8 +21,7 @@ import NewTicketComponent from './newTicketPage'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import LoginPageContainer from './loginPage'
 import ImageAvatars from '../components/avatars'
-import CircularIndeterminate from '../components/loading'
-import { useCheckIsLogin } from '../components/guardLoginLayout'
+import { useGuard } from '../components/guard'
 
 const drawerWidth = 240
 
@@ -72,7 +71,7 @@ function DrawerBar(props) {
 	const theme = useTheme()
 	const [mobileOpen, setMobileOpen] = React.useState(false)
 	const [selectedOption, setSelectedOption] = React.useState('')
-	const { loginStatus, loading } = useCheckIsLogin()
+	const { loginStatus } = useGuard()
 
 	const handleDrawerToggle = () => {
 		setMobileOpen(!mobileOpen)
@@ -177,9 +176,7 @@ function DrawerBar(props) {
 								color: 'rgb(66, 73, 100)'
 							}}
 						>
-							{loading ? (
-								<CircularIndeterminate />
-							) : loginStatus ? (
+							{loginStatus ? (
 								<ImageAvatars />
 							) : (
 								<ExitToAppIcon />

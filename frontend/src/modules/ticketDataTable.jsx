@@ -6,7 +6,7 @@ import TicketsInsight from './ticketsInsight'
 import { Link } from 'react-router-dom'
 import LoginPageContainer from './loginPage'
 import CircularIndeterminate from '../components/loading'
-import { useCheckIsLogin } from '../components/guardLoginLayout'
+import { useGuard } from '../components/guard'
 
 export function TicketDataTable({
 	status,
@@ -14,9 +14,6 @@ export function TicketDataTable({
 	defaultModules,
 	showNewTicketButton,
 	showTicketsInsight,
-	login_status,
-	client_authorization,
-	admin_authorization
 }) {
 	const [tickets, setTickets] = React.useState([])
 	const [selectPriority, setSelectPriority] = React.useState(
@@ -25,13 +22,14 @@ export function TicketDataTable({
 	const [selectModules, setSelectModules] = React.useState(
 		defaultModules || ''
 	)
+
 	const { loading, loginStatus, clientAuthorization, adminAuthorization } =
-		useCheckIsLogin()
+		useGuard()
 
 	React.useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const res = await (await fetch('/tickets')).json()
+				const res = await (await fetch('/api/tickets')).json()
 				const filteredTickets =
 					status === 'All'
 						? res

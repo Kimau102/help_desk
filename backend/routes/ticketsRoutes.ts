@@ -2,11 +2,10 @@ import express, { Request, Response } from 'express'
 import { pool } from '../util'
 import { formatDistanceToNow } from 'date-fns'
 import { RowDataPacket } from 'mysql2'
-import { isLoggedInAPI } from '../guard'
 
 export const ticketsRoutes = express.Router()
 
-ticketsRoutes.get('/', isLoggedInAPI, getAllTickets)
+ticketsRoutes.get('/', getAllTickets)
 
 async function getAllTickets(req: Request, res: Response) {
 	try {

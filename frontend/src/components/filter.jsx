@@ -49,7 +49,7 @@ export function FilterPriority(props) {
 	React.useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const res = await (await fetch('/tickets')).json()
+				const res = await (await fetch('/api/tickets')).json()
 				const prioritySets = new Set()
 				res.forEach((item) => {
 					prioritySets.add(item.priority)
@@ -90,7 +90,7 @@ export function FilterModules(props) {
 	React.useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const res = await (await fetch('/tickets')).json()
+				const res = await (await fetch('/api/tickets')).json()
 				const moduleSets = new Set()
 				res.forEach((item) => {
 					moduleSets.add(item.modules)
