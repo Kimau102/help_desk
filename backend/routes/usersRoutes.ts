@@ -24,6 +24,7 @@ async function login(req: Request, res: Response) {
 				(user) => user.password === req.body.password
 			)
 			if (checkPassword === true) {
+				req.session.user_id = result[0].id
 				req.session.user_email = req.body.email
 				req.session.user_authorization = result[0].user_authorization
 				req.session.admin_authorization = result[0].admin_authorization

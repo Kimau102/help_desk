@@ -8,6 +8,6 @@ export const isLoggedInAPI = (
 	if (req.session?.user_email) {
 		next()
 	} else {
-		res.status(401).json({msg: 'No Authorization'})
+		res.status(401).json({ msg: 'No Authorization' })
 	}
 }
