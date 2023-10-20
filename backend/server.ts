@@ -17,6 +17,8 @@ app.use(
 declare module 'express-session' {
 	interface SessionData {
 		user_email?: string
+		user_authorization: number;
+		admin_authorization: number;
 	}
 }
 app.use(express.urlencoded({ extended: true }))

@@ -2,8 +2,8 @@ import React from 'react'
 
 export function useGuard() {
 	const [loading, setLoading] = React.useState(true)
-	const [loginStatus, setLoginStatus] = React.useState(null)
-	const [clientAuthorization, setClientAuthorization] = React.useState(null)
+	const [loginStatus, setLoginStatus] = React.useState(false)
+	const [userAuthorization, setClientAuthorization] = React.useState(null)
 	const [adminAuthorization, setAdminAuthorization] = React.useState(null)
 
 	React.useEffect(() => {
@@ -13,18 +13,17 @@ export function useGuard() {
 				if (res.login_status === true) {
 					setLoading(false)
 					setLoginStatus(res.login_status)
-					setClientAuthorization(res.client_authorization)
+					setClientAuthorization(res.user_authorization)
 					setAdminAuthorization(res.admin_authorization)
 				} else {
 					setLoading(false)
 					setLoginStatus(false)
-					
 				}
 			} catch (error) {
 				console.error(error)
 			}
 		})()
-	}, [])
+	}, [loginStatus])
 
-	return { loading, loginStatus, clientAuthorization, adminAuthorization }
+	return { loading, loginStatus, userAuthorization, adminAuthorization }
 }

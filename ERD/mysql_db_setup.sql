@@ -5,7 +5,7 @@ CREATE TABLE users (
     email TEXT NOT NULL,
     password TEXT NOT NULL,
     admin_authorization BOOLEAN NOT NULL,
-    client_authorization BOOLEAN NOT NULL,
+    user_authorization BOOLEAN NOT NULL,
     address TEXT NOT NULL,
     created_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP

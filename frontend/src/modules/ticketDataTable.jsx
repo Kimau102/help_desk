@@ -13,7 +13,7 @@ export function TicketDataTable({
 	defaultPriority,
 	defaultModules,
 	showNewTicketButton,
-	showTicketsInsight,
+	showTicketsInsight
 }) {
 	const [tickets, setTickets] = React.useState([])
 	const [selectPriority, setSelectPriority] = React.useState(
@@ -23,24 +23,25 @@ export function TicketDataTable({
 		defaultModules || ''
 	)
 
-	const { loading, loginStatus, clientAuthorization, adminAuthorization } =
+	const { loading, loginStatus, userAuthorization, adminAuthorization } =
 		useGuard()
-
 	React.useEffect(() => {
 		const fetchData = async () => {
 			try {
-				const res = await (await fetch('/api/tickets')).json()
-				const filteredTickets =
-					status === 'All'
-						? res
-						: res.filter((item) => item.status === status)
-				setTickets(filteredTickets)
+				if(loginStatus === true) {
+					const res = await (await fetch('/api/tickets')).json()
+					const filteredTickets =
+						status === 'All'
+							? res
+							: res.filter((item) => item.status === status)
+					setTickets(filteredTickets)
+				}
 			} catch (e) {
 				console.log(e)
 			}
 		}
 		fetchData()
-	}, [status])
+	}, [loginStatus, status])
 
 	const handlePriorityChange = (event) => {
 		setSelectPriority(event.target.value)
@@ -71,7 +72,7 @@ export function TicketDataTable({
 						<h3>Tickets List</h3>
 						<div>
 							<div style={{ height: 52, width: '100%' }}>
-								{clientAuthorization === 1 &&
+								{userAuthorization === 1 &&
 									adminAuthorization === 0 &&
 									showNewTicketButton && (
 										<>

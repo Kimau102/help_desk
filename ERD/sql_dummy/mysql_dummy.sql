@@ -1,5 +1,5 @@
 -- Insert data into the users table
-INSERT INTO users (first_name, last_name, email, password, admin_authorization, address)
+INSERT INTO users (first_name, last_name, email, password, admin_authorization, user_authorization, address)
 VALUES
     ('John', 'Doe', 'john@example.com', 'password123', true, False, '123 Main St'),
     ('Jane', 'Smith', 'jane@example.com', 'securepass', false, true, '456 Elm St'),

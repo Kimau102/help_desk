@@ -15,21 +15,23 @@ async function login(req: Request, res: Response) {
             users.email,
             users.password,
             users.admin_authorization,
-            users. client_authorization from users where users.email = ?`,
+            users. user_authorization from users where users.email = ?`,
 			[req.body.email]
 		)
 
 		if (result.length > 0) {
-			const checkLogin = result.some(
+			const checkPassword = result.some(
 				(user) => user.password === req.body.password
 			)
-			if (checkLogin === true) {
+			if (checkPassword === true) {
 				req.session.user_email = req.body.email
+				req.session.user_authorization = result[0].user_authorization
+				req.session.admin_authorization = result[0].admin_authorization
 				res.status(200).json({
 					user_id: result[0].id,
 					email: result[0].email,
 					admin_authorization: result[0].admin_authorization,
-					client_authorization: result[0].client_authorization
+					user_authorization: result[0].user_authorization
 				})
 			} else {
 				res.status(400).json({ msg: 'login failure' })
@@ -67,7 +69,7 @@ async function getSession(req: Request, res: Response) {
 			users.last_name,
 			users.email,
 			users.admin_authorization,
-			users.client_authorization,
+			users.user_authorization,
 			users.address from users where users.email = ?`,
 				[req.session.user_email]
 			)
@@ -78,7 +80,7 @@ async function getSession(req: Request, res: Response) {
 				user_last_name: userInfo[0].last_name,
 				email: userInfo[0].email,
 				admin_authorization: userInfo[0].admin_authorization,
-				client_authorization: userInfo[0].client_authorization,
+				user_authorization: userInfo[0].user_authorization,
 				address: userInfo[0].address
 			})
 		} else {

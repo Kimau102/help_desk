@@ -122,9 +122,7 @@ function LoginPage() {
 }
 
 function LoginPageContainer() {
-	const { loading, loginStatus } =
-		useGuard()
-
+	const { loading, loginStatus } = useGuard()
 	return (
 		<div>
 			{loading ? (

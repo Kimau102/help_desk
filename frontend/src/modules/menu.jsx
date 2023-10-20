@@ -176,11 +176,7 @@ function DrawerBar(props) {
 								color: 'rgb(66, 73, 100)'
 							}}
 						>
-							{loginStatus ? (
-								<ImageAvatars />
-							) : (
-								<ExitToAppIcon />
-							)}
+							{loginStatus ? <ImageAvatars /> : <ExitToAppIcon />}
 						</Link>
 					</Toolbar>
 				</AppBar>
