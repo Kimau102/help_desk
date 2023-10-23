@@ -11,6 +11,11 @@ export const columns = [
 		width: 160
 	},
 	{
+		field: 'email',
+		headerName: 'Email',
+		width: 200
+	},
+	{
 		field: 'modules',
 		headerName: 'Modules',
 		width: 150

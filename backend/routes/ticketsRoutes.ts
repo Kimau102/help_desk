@@ -17,6 +17,7 @@ async function getAllTickets(req: Request, res: Response) {
 					SELECT
 						t.id,
 						CONCAT(u.first_name, ' ', u.last_name) AS requester,
+						u.email AS email,
 						t.modules,
 						t.subject,
 						t.cs,
@@ -49,6 +50,7 @@ async function getAllTickets(req: Request, res: Response) {
 				`SELECT
 		              t.id,
 		              CONCAT(u.first_name, ' ', u.last_name) AS requester,
+					  u.email AS email,
 		              t.modules,
 		              t.subject,
 		              t.cs,
