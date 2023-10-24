@@ -25,3 +25,7 @@ CREATE TABLE tickets (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (requester_id) REFERENCES users(id)
 );
+
+-- tickets last message update reference
+ALTER TABLE tickets
+CHANGE last_message last_message TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
