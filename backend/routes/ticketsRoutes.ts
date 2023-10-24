@@ -98,8 +98,9 @@ async function createTicket(req: Request, res: Response) {
 	try {
 		const requester_id = req.session.user_id;
 		const formObj = req.body
+
 		await pool.query(`
-			INSERT INTO tickets (requester_id, modules, subject, cs, priority ) 
+			INSERT INTO tickets (requester_id, modules, subject, cs, priority) 
 			VALUES (?, ?, ?, ?, ?)
 		`, [requester_id, formObj.modules, formObj.subject, formObj.cs, formObj.priority])
 

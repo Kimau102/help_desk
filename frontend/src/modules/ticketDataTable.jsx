@@ -64,17 +64,15 @@ const columns = [
 		field: 'action',
 		headerName: 'Action',
 		width: 150,
-		getActions: () => {
-			return [
-				<GridActionsCellItem
-					icon={<EditIcon />}
-					label="Edit"
-					className="textPrimary"
-					// onClick={handleEditClick(id)}
-					color="inherit"
-				/>
-			]
-		}
+		renderCell: () => (
+			<GridActionsCellItem
+				icon={<EditIcon />}
+				label="Edit"
+				// onClick={() => handleEditButtonClick(params.row.id)} 
+				className="textPrimary"
+				color="inherit"
+			/>
+		)
 	}
 ]
 
