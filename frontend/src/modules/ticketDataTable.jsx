@@ -171,7 +171,6 @@ export function TicketDataTable({
 						<DataGrid
 							rows={filteredRows}
 							columns={columns}
-							pageSize={20}
 							checkboxSelection
 							disableSelectionOnClick
 						/>
