@@ -4,49 +4,6 @@ import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
 import Select from '@mui/material/Select'
 
-export const columns = [
-	{
-		field: 'requester',
-		headerName: 'Requester',
-		width: 160
-	},
-	{
-		field: 'email',
-		headerName: 'Email',
-		width: 200
-	},
-	{
-		field: 'modules',
-		headerName: 'Modules',
-		width: 150
-	},
-	{
-		field: 'subject',
-		headerName: 'Subject',
-		width: 150
-	},
-	{
-		field: 'cs',
-		headerName: 'CS',
-		width: 150
-	},
-	{
-		field: 'priority',
-		headerName: 'Priority',
-		width: 150
-	},
-	{
-		field: 'status',
-		headerName: 'Status',
-		width: 150
-	},
-	{
-		field: 'last_message',
-		headerName: 'Last Message',
-		width: 200
-	}
-]
-
 export function FilterPriority(props) {
 	const { selectPriority, onPriorityChange } = props
 

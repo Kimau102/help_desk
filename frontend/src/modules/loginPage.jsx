@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Paper, TextField, Button, Typography } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import CircularIndeterminate from '../components/loading'
@@ -30,18 +30,12 @@ function LoginedPage() {
 		}
 	}
 
-	const [loginedInfo, setLoginedInfo] = useState('')
-	useEffect(() => {
-		;(async () => {
-			const res = await (await fetch('/api/user/session')).json()
-			const userName = res.user_first_name + ' ' + res.user_last_name
-			setLoginedInfo(userName)
-		})()
-	}, [])
+	const { userName } =
+		useGuard()
 
 	return (
 		<div>
-			<h1>Hi, {loginedInfo}</h1>
+			<h1>Hi, { userName }</h1>
 			<Button onClick={handleLogout}>Logout</Button>
 		</div>
 	)
