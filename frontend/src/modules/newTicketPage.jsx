@@ -27,6 +27,18 @@ function NewTicketComponent(onFormSubmit) {
 
 	const handleSubmit = async (event) => {
 		event.preventDefault()
+
+		if (
+			formData.modules.trim() === '' ||
+			formData.subject.trim() === '' ||
+			formData.cs.trim() === '' ||
+			formData.priority.trim() === '' ||
+			formData.status.trim() === ''
+		  ) {
+			alert('Please fill in all fields');
+			return;
+		  }
+
 		const res = await fetch('/api/tickets', {
 			method: 'POST',
 			headers: {
