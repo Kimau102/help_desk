@@ -9,6 +9,10 @@ import CircularIndeterminate from '../components/loading'
 import { useGuard } from '../components/guard'
 import EditIcon from '@mui/icons-material/Edit';
 
+const handleEditClick = (id) => {
+	console.log(id)
+}
+
 const columns = [
 	{
 		field: 'requester',
@@ -64,11 +68,11 @@ const columns = [
 		field: 'action',
 		headerName: 'Action',
 		width: 150,
-		renderCell: () => (
+		renderCell: (params) => (
 			<GridActionsCellItem
 				icon={<EditIcon />}
 				label="Edit"
-				// onClick={() => handleEditButtonClick(params.row.id)} 
+				onClick={() => handleEditClick(params.row.id)}
 				className="textPrimary"
 				color="inherit"
 			/>
@@ -172,7 +176,8 @@ export function TicketDataTable({
 							rows={filteredRows}
 							columns={columns}
 							checkboxSelection
-							disableSelectionOnClick
+							disableRowSelectionOnClick
+							disableColumnMenu
 						/>
 					</div>
 				</>
