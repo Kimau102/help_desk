@@ -1,48 +1,51 @@
-import express, { Request, Response } from 'express'
-import { pool } from '../util'
-import { RowDataPacket } from 'mysql2'
+import express, { Request, Response } from 'express';
+import Knex from 'knex';
 
-export const userRoutes = express.Router()
+const knexConfigs = require('../knexfile');
+const configMode = process.env.NODE_ENV || 'development';
+const knexConfig = knexConfigs[configMode];
+const knex = Knex(knexConfig);
 
-userRoutes.post('/login', login)
-userRoutes.post('/logout', logout)
-userRoutes.get('/session', getSession)
+export const userRoutes = express.Router();
+
+userRoutes.post('/login', login);
+userRoutes.post('/logout', logout);
+userRoutes.get('/session', getSession);
 
 async function login(req: Request, res: Response) {
 	try {
-		const [result] = await pool.query<RowDataPacket[]>(
-			`SELECT users.id,
-            users.email,
-            users.password,
-            users.admin_authorization,
-            users. user_authorization from users where users.email = ?`,
-			[req.body.email]
-		)
+		const email = req.body.email;
+		const password = req.body.password;
 
-		if (result.length > 0) {
-			const checkPassword = result.some(
-				(user) => user.password === req.body.password
-			)
-			if (checkPassword === true) {
-				req.session.user_id = result[0].id
-				req.session.user_email = req.body.email
-				req.session.user_authorization = result[0].user_authorization
-				req.session.admin_authorization = result[0].admin_authorization
-				res.status(200).json({
-					user_id: result[0].id,
-					email: result[0].email,
-					admin_authorization: result[0].admin_authorization,
-					user_authorization: result[0].user_authorization
-				})
-			} else {
-				res.status(400).json({ msg: 'login failure' })
-			}
+		const [user] = await knex
+			.select([
+				'id',
+				'email',
+				'password',
+				'admin_authorization',
+				'user_authorization',
+			])
+			.from('users')
+			.where({ email });
+
+		if (user && user.password === password) {
+			req.session.user_id = user.id;
+			req.session.user_email = user.email;
+			req.session.user_authorization = user.user_authorization;
+			req.session.admin_authorization = user.admin_authorization;
+
+			res.status(200).json({
+				user_id: user.id,
+				email: user.email,
+				admin_authorization: user.admin_authorization,
+				user_authorization: user.user_authorization,
+			});
 		} else {
-			res.status(400).json({ msg: 'login failure' })
+			res.status(400).json({ msg: 'Login failure' });
 		}
 	} catch (err) {
-		console.error('Error querying MySQL:', err)
-		res.status(500).json({ error: 'Database error' })
+		console.error('Error querying the database:', err);
+		res.status(500).json({ error: 'Database error' });
 	}
 }
 
@@ -50,47 +53,50 @@ async function logout(req: Request, res: Response) {
 	if (req.session.user_email) {
 		req.session.destroy((err) => {
 			if (err) {
-				console.error('Error destroying session:', err)
-				res.status(500).json({ error: 'Logout failed' })
+				console.error('Error destroying session:', err);
+				res.status(500).json({ error: 'Logout failed' });
 			} else {
-				res.status(200).json({ message: 'Logout successful' })
+				res.status(200).json({ message: 'Logout successful' });
 			}
-		})
+		});
 	} else {
-		res.json({ msg: 'not login yet' })
+		res.json({ msg: 'Not logged in yet' });
 	}
 }
 
 async function getSession(req: Request, res: Response) {
 	try {
 		if (req.session?.user_email) {
-			const [userInfo] = await pool.query(
-				`SELECT users.id,
-			users.first_name,
-			users.last_name,
-			users.email,
-			users.admin_authorization,
-			users.user_authorization,
-			users.address from users where users.email = ?`,
-				[req.session.user_email]
-			)
+			const [userInfo] = await knex
+				.select([
+					'id',
+					'first_name',
+					'last_name',
+					'email',
+					'admin_authorization',
+					'user_authorization',
+					'address',
+				])
+				.from('users')
+				.where({ email: req.session.user_email });
+
 			res.status(200).json({
 				login_status: true,
-				user_id: userInfo[0].id,
-				user_first_name: userInfo[0].first_name,
-				user_last_name: userInfo[0].last_name,
-				email: userInfo[0].email,
-				admin_authorization: userInfo[0].admin_authorization,
-				user_authorization: userInfo[0].user_authorization,
-				address: userInfo[0].address
-			})
+				user_id: userInfo.id,
+				user_first_name: userInfo.first_name,
+				user_last_name: userInfo.last_name,
+				email: userInfo.email,
+				admin_authorization: userInfo.admin_authorization,
+				user_authorization: userInfo.user_authorization,
+				address: userInfo.address,
+			});
 		} else {
 			res.status(401).json({
-				msg: 'No Authorization',
-				login_status: false
-			})
+				msg: 'No authorization',
+				login_status: false,
+			});
 		}
 	} catch (err) {
-		console.log(err)
+		console.log(err);
 	}
 }

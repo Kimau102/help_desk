@@ -6,6 +6,7 @@ VALUES
     ('Michael', 'Johnson', 'michael@example.com', 'pass123', true, false '789 Oak St'),
     ('Sarah', 'Brown', 'sarah@example.com', 'mysecret', false, true, '101 Maple St'),
     ('David', 'Wilson', 'david@example.com', 'secret123', true, false '202 Pine St');
+    ('Au', 'Kim', 'kimau@example.com', '12345678', true, true 'HK');
 
 -- Insert data into the tickets table
 INSERT INTO tickets (requester_id, modules, subject, cs, priority, status, last_message)

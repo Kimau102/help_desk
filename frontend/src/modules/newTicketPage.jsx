@@ -89,6 +89,22 @@ function NewTicketComponent(onFormSubmit) {
 									<MenuItem value='Low'>Low</MenuItem>
 								</Select>
 							</div>
+							<div style={{ display: 'flex' }}>
+								<Select
+									name='status'
+									label='Status'
+									value={formData.status}
+									onChange={handleInputChange}
+									style={{ flex: 1 }}
+								>
+									<MenuItem value='Open'>Open</MenuItem>
+									<MenuItem value='Closed'>Closed</MenuItem>
+									<MenuItem value='Pending'>Pending</MenuItem>
+									<MenuItem value='On Hold'>On Hold</MenuItem>
+									<MenuItem value='Solve'>Solve</MenuItem>
+									<MenuItem value='Processing'>Processing</MenuItem>
+								</Select>
+							</div>
 							<Button type='submit' variant='contained' color='primary'>
 								Submit
 							</Button>
