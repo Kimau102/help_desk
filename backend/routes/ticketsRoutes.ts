@@ -1,11 +1,6 @@
 import express, { Request, Response } from 'express'
 import { formatDistanceToNow } from 'date-fns'
-import Knex from "knex";
-
-const knexConfigs = require("../knexfile");
-const configMode = process.env.NODE_ENV || "development";
-const knexConfig = knexConfigs[configMode];
-const knex = Knex(knexConfig);
+import { knex } from '../util'
 
 export const ticketsRoutes = express.Router()
 
@@ -15,78 +10,84 @@ ticketsRoutes.post('/', createTicket)
 async function getAllTickets(req: Request, res: Response) {
 	try {
 		if (req.session.admin_authorization === 1) {
-			const results = await knex("tickets as t")
+			const results = await knex('tickets as t')
 				.select([
-					"t.id",
-					knex.raw("CONCAT(u.first_name, ' ', u.last_name) AS requester"),
-					"u.email AS email",
-					"t.modules",
-					"t.subject",
-					"t.cs",
-					"t.priority",
-					"t.status",
-					"t.last_message",
+					't.id',
+					knex.raw(
+						"CONCAT(u.first_name, ' ', u.last_name) AS requester"
+					),
+					'u.email AS email',
+					't.modules',
+					't.subject',
+					't.cs',
+					't.priority',
+					't.status',
+					't.last_message'
 				])
-				.innerJoin("users as u", "t.requester_id", "u.id")
-				.orderBy("t.last_message", "desc");
+				.innerJoin('users as u', 't.requester_id', 'u.id')
+				.orderBy('t.last_message', 'desc')
 
 			const formattedRes = results.map((result) => ({
 				...result,
 				last_message: formatDistanceToNow(result.last_message, {
-					addSuffix: true,
-				}),
-			}));
+					addSuffix: true
+				})
+			}))
 
-			res.json(formattedRes);
+			res.json(formattedRes)
 		} else if (req.session.user_authorization === 1) {
-			const userId = req.session.user_id;
+			const userId = req.session.user_id
 
-			const results = await knex("tickets as t")
+			const results = await knex('tickets as t')
 				.select([
-					"t.id",
-					knex.raw("CONCAT(u.first_name, ' ', u.last_name) AS requester"),
-					"u.email AS email",
-					"t.modules",
-					"t.subject",
-					"t.cs",
-					"t.priority",
-					"t.status",
-					"t.last_message",
+					't.id',
+					knex.raw(
+						"CONCAT(u.first_name, ' ', u.last_name) AS requester"
+					),
+					'u.email AS email',
+					't.modules',
+					't.subject',
+					't.cs',
+					't.priority',
+					't.status',
+					't.last_message'
 				])
-				.innerJoin("users as u", "t.requester_id", "u.id")
-				.where("u.id", userId)
-				.orderBy("t.last_message", "desc");
+				.innerJoin('users as u', 't.requester_id', 'u.id')
+				.where('u.id', userId)
+				.orderBy('t.last_message', 'desc')
 
 			const formattedRes = results.map((result) => ({
 				...result,
 				last_message: formatDistanceToNow(result.last_message, {
-					addSuffix: true,
-				}),
-			}));
+					addSuffix: true
+				})
+			}))
 
-			res.json(formattedRes);
+			res.json(formattedRes)
 		}
 	} catch (err) {
-		console.error('Error querying the database:', err);
-		res.status(500).json({ error: 'Database error' });
+		console.error('Error querying the database:', err)
+		res.status(500).json({ error: 'Database error' })
 	}
 }
 
 async function createTicket(req: Request, res: Response) {
 	try {
-		const requester_id = req.session.user_id;
+		const requester_id = req.session.user_id
 		const formObj = req.body
 
-		await knex.insert([
-			{
-				requester_id: requester_id,
-				modules: formObj.modules,
-				subject: formObj.subject,
-				cs: formObj.cs,
-				priority: formObj.priority,
-				status: formObj.status,
-			}
-		]).into('tickets')
+		await knex
+			.insert([
+				{
+					requester_id: requester_id,
+					modules: formObj.modules,
+					subject: formObj.subject,
+					cs: formObj.cs,
+					priority: formObj.priority,
+					status: formObj.status
+				}
+			])
+			.into('tickets')
 
 		res.status(200).json({ msg: 'Create tickets complete' })
 	} catch (err) {

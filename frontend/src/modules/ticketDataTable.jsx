@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid'
+import { DataGrid } from '@mui/x-data-grid'
 import Button from '@mui/material/Button'
 import { FilterPriority, FilterModules } from '../components/filter'
 import TicketsInsight from './ticketsInsight'
@@ -7,10 +7,11 @@ import { Link } from 'react-router-dom'
 import LoginPageContainer from './loginPage'
 import CircularIndeterminate from '../components/loading'
 import { useGuard } from '../components/guard'
-import EditIcon from '@mui/icons-material/Edit';
+import TicketDialog from './ticketDialog'
 
-const handleEditClick = (id) => {
-	console.log(id)
+
+const handleEditButton = (ticketID) => {
+	console.log(ticketID);
 }
 
 const columns = [
@@ -63,20 +64,17 @@ const columns = [
 		field: 'last_message',
 		headerName: 'Last Message',
 		width: 200
-	},
+	}, 
 	{
-		field: 'action',
 		headerName: 'Action',
 		width: 150,
-		renderCell: (params) => (
-			<GridActionsCellItem
-				icon={<EditIcon />}
-				label="Edit"
-				onClick={() => handleEditClick(params.row.id)}
-				className="textPrimary"
-				color="inherit"
-			/>
-		)
+		renderCell: (params) => {
+			return (
+				<Button onClick={() => handleEditButton(params.row.id)}>
+					<TicketDialog />
+				</Button>
+			)
+		}
 	}
 ]
 
@@ -95,8 +93,7 @@ export function TicketDataTable({
 		defaultModules || ''
 	)
 
-	const { loading, loginStatus, userAuthorization } =
-		useGuard()
+	const { loading, loginStatus, userAuthorization } = useGuard()
 
 	React.useEffect(() => {
 		const fetchData = async () => {

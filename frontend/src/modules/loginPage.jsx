@@ -7,8 +7,6 @@ import { useGuard } from '../components/guard'
 const useStyles = makeStyles(() => ({
 	root: {
 		display: 'flex',
-		// justifyContent: 'center',
-		// alignItems: 'center',
 		height: '200px'
 	},
 	formContainer: {
@@ -30,12 +28,11 @@ function LoginedPage() {
 		}
 	}
 
-	const { userName } =
-		useGuard()
+	const { userName } = useGuard()
 
 	return (
 		<div>
-			<h1>Hi, { userName }</h1>
+			<h1>Hi, {userName}</h1>
 			<Button onClick={handleLogout}>Logout</Button>
 		</div>
 	)

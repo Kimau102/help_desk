@@ -1,17 +1,23 @@
 import dotenv from 'dotenv'
-import mysql from 'mysql2'
+// import mysql from 'mysql2'
+import Knex from 'knex'
 
 dotenv.config()
 
-export const pool = mysql
-	.createPool({
-		host: process.env.DB_LOACALHOST,
-		user: process.env.DB_USER,
-		password: process.env.DB_PASSWORD,
-		database: process.env.DB_DATABASE,
-		connectionLimit: 10
-	})
-	.promise()
+const knexConfigs = require('./knexfile')
+const configMode = process.env.NODE_ENV || 'development'
+const knexConfig = knexConfigs[configMode]
+export const knex = Knex(knexConfig)
+
+// export const pool = mysql
+// 	.createPool({
+// 		host: process.env.DB_LOACALHOST,
+// 		user: process.env.DB_USER,
+// 		password: process.env.DB_PASSWORD,
+// 		database: process.env.DB_DATABASE,
+// 		connectionLimit: 10
+// 	})
+// 	.promise()
 
 function generateRandomString(length: number) {
 	let result = ''
