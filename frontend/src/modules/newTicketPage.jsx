@@ -7,7 +7,7 @@ import MenuItem from '@mui/material/MenuItem'
 import { useGuard } from '../components/guard'
 import LoginPageContainer from './loginPage'
 
-function NewTicketComponent(onFormSubmit) {
+function NewTicketComponent() {
 	const { loginStatus, userAuthorization } = useGuard()
 
 	const [formData, setFormData] = useState({

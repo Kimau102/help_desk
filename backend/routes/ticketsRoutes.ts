@@ -22,7 +22,8 @@ async function getAllTickets(req: Request, res: Response) {
 					't.cs',
 					't.priority',
 					't.status',
-					't.last_message'
+					't.last_message',
+					't.created_at'
 				])
 				.innerJoin('users as u', 't.requester_id', 'u.id')
 				.orderBy('t.last_message', 'desc')
@@ -31,7 +32,8 @@ async function getAllTickets(req: Request, res: Response) {
 				...result,
 				last_message: formatDistanceToNow(result.last_message, {
 					addSuffix: true
-				})
+				}),
+				created_at: new Date(result.created_at).toLocaleDateString()
 			}))
 
 			res.json(formattedRes)
@@ -50,7 +52,8 @@ async function getAllTickets(req: Request, res: Response) {
 					't.cs',
 					't.priority',
 					't.status',
-					't.last_message'
+					't.last_message',
+					't.created_at'
 				])
 				.innerJoin('users as u', 't.requester_id', 'u.id')
 				.where('u.id', userId)
@@ -60,7 +63,8 @@ async function getAllTickets(req: Request, res: Response) {
 				...result,
 				last_message: formatDistanceToNow(result.last_message, {
 					addSuffix: true
-				})
+				}),
+				created_at: new Date(result.created_at).toLocaleDateString()
 			}))
 
 			res.json(formattedRes)

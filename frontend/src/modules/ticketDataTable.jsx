@@ -9,75 +9,6 @@ import CircularIndeterminate from '../components/loading'
 import { useGuard } from '../components/guard'
 import TicketDialog from './ticketDialog'
 
-
-const handleEditButton = (ticketID) => {
-	console.log(ticketID);
-}
-
-const columns = [
-	{
-		field: 'requester',
-		headerName: 'Requester',
-		width: 150
-	},
-	{
-		field: 'email',
-		headerName: 'Email',
-		width: 200
-	},
-	// {
-	// 	field: 'requesterInfo',
-	// 	headerName: 'Requester',
-	// 	width: 300,
-	// 	valueGetter: (params) => {
-	// 		return (
-	// 			`${params.row.requester} /n ${params.row.email}`
-	// 			);
-	// 	}
-	// },
-	{
-		field: 'modules',
-		headerName: 'Modules',
-		width: 150
-	},
-	{
-		field: 'subject',
-		headerName: 'Subject',
-		width: 150
-	},
-	{
-		field: 'cs',
-		headerName: 'CS',
-		width: 150
-	},
-	{
-		field: 'priority',
-		headerName: 'Priority',
-		width: 150
-	},
-	{
-		field: 'status',
-		headerName: 'Status',
-		width: 150
-	},
-	{
-		field: 'last_message',
-		headerName: 'Last Message',
-		width: 200
-	}, 
-	{
-		headerName: 'Action',
-		width: 150,
-		renderCell: (params) => {
-			return (
-				<Button onClick={() => handleEditButton(params.row.id)}>
-					<TicketDialog />
-				</Button>
-			)
-		}
-	}
-]
-
 export function TicketDataTable({
 	status,
 	defaultPriority,
@@ -85,6 +16,7 @@ export function TicketDataTable({
 	showNewTicketButton,
 	showTicketsInsight
 }) {
+
 	const [tickets, setTickets] = React.useState([])
 	const [selectPriority, setSelectPriority] = React.useState(
 		defaultPriority || ''
@@ -130,6 +62,89 @@ export function TicketDataTable({
 			(isModulesAll || selectModules === ticket.modules)
 		)
 	})
+	
+	const [ticketID, setTicketID] = React.useState(null)
+    const [ticketInfo, setTicketInfo] = React.useState('')
+
+	const handleEditButton = (ticketID) => {
+		setTicketID(ticketID);
+	}
+	
+    React.useEffect(() => {
+        if (loginStatus === true) {
+            (async () => {
+                const res = await (await fetch('/api/tickets')).json();
+                const selectedTicket = res.find((ticket) => ticket.id === ticketID);
+                if (selectedTicket) {
+                    setTicketInfo(selectedTicket);
+                }
+            })();
+        }
+    }, [loginStatus, ticketID]);
+
+	const columns = [
+		{
+			field: 'requester',
+			headerName: 'Requester',
+			width: 150
+		},
+		{
+			field: 'email',
+			headerName: 'Email',
+			width: 200
+		},
+		// {
+		// 	field: 'requesterInfo',
+		// 	headerName: 'Requester',
+		// 	width: 300,
+		// 	valueGetter: (params) => {
+		// 		return (
+		// 			`${params.row.requester} /n ${params.row.email}`
+		// 			);
+		// 	}
+		// },
+		{
+			field: 'modules',
+			headerName: 'Modules',
+			width: 150
+		},
+		{
+			field: 'subject',
+			headerName: 'Subject',
+			width: 150
+		},
+		{
+			field: 'cs',
+			headerName: 'CS',
+			width: 150
+		},
+		{
+			field: 'priority',
+			headerName: 'Priority',
+			width: 150
+		},
+		{
+			field: 'status',
+			headerName: 'Status',
+			width: 150
+		},
+		{
+			field: 'last_message',
+			headerName: 'Last Message',
+			width: 200
+		}, 
+		{
+			headerName: 'Action',
+			width: 150,
+			renderCell: (params) => {
+				return (
+					<Button onClick={() => handleEditButton(params.row.id)}>
+					<TicketDialog ticketInfo ={ticketInfo}/>
+					</Button>
+				)
+			}
+		}
+	]
 
 	return (
 		<div>
