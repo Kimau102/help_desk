@@ -5,7 +5,8 @@
 	"main": "sever.ts",
 	"scripts": {
 		"start": "ts-node-dev server.ts",
-		"format": "prettier --write ."
+		"format": "prettier --write .",
+		"knex": "knex"
 	},
 	"author": "",
 	"license": "ISC",

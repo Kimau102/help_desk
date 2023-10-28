@@ -85,6 +85,7 @@ export default function TicketDialog({ ticketInfo }) {
     };
     const handleClose = () => {
         setOpen(false);
+        setSelectedStatus(ticketInfo.status)
     };
 
     return (
