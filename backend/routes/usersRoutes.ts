@@ -17,7 +17,7 @@ async function login(req: Request, res: Response) {
 				'id',
 				'email',
 				'password',
-				'admin_authorization',
+				'cs_authorization',
 				'user_authorization'
 			])
 			.from('users')
@@ -27,12 +27,12 @@ async function login(req: Request, res: Response) {
 			req.session.user_id = user.id
 			req.session.user_email = user.email
 			req.session.user_authorization = user.user_authorization
-			req.session.admin_authorization = user.admin_authorization
+			req.session.cs_authorization = user.cs_authorization
 
 			res.status(200).json({
 				user_id: user.id,
 				email: user.email,
-				admin_authorization: user.admin_authorization,
+				cs_authorization: user.cs_authorization,
 				user_authorization: user.user_authorization
 			})
 		} else {
@@ -68,7 +68,7 @@ async function getSession(req: Request, res: Response) {
 					'first_name',
 					'last_name',
 					'email',
-					'admin_authorization',
+					'cs_authorization',
 					'user_authorization',
 					'address'
 				])
@@ -81,7 +81,7 @@ async function getSession(req: Request, res: Response) {
 				user_first_name: userInfo.first_name,
 				user_last_name: userInfo.last_name,
 				email: userInfo.email,
-				admin_authorization: userInfo.admin_authorization,
+				cs_authorization: userInfo.cs_authorization,
 				user_authorization: userInfo.user_authorization,
 				address: userInfo.address
 			})

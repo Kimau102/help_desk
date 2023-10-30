@@ -10,7 +10,7 @@ export async function seed(knex: Knex): Promise<void> {
 			last_name: 'Doe',
 			email: 'john@example.com',
 			password: 'password123',
-			admin_authorization: true,
+			cs_authorization: true,
 			user_authorization: false,
 			address: '123 Main St'
 		},
@@ -19,7 +19,7 @@ export async function seed(knex: Knex): Promise<void> {
 			last_name: 'Smith',
 			email: 'jane@example.com',
 			password: 'securepass',
-			admin_authorization: false,
+			cs_authorization: false,
 			user_authorization: true,
 			address: '456 Elm St'
 		},
@@ -28,7 +28,7 @@ export async function seed(knex: Knex): Promise<void> {
 			last_name: 'Johnson',
 			email: 'michael@example.com',
 			password: 'pass123',
-			admin_authorization: true,
+			cs_authorization: true,
 			user_authorization: false,
 			address: '789 Oak St'
 		},
@@ -37,7 +37,7 @@ export async function seed(knex: Knex): Promise<void> {
 			last_name: 'Brown',
 			email: 'sarah@example.com',
 			password: 'mysecret',
-			admin_authorization: false,
+			cs_authorization: false,
 			user_authorization: true,
 			address: '101 Maple St'
 		},
@@ -46,7 +46,7 @@ export async function seed(knex: Knex): Promise<void> {
 			last_name: 'Wilson',
 			email: 'david@example.com',
 			password: 'secret123',
-			admin_authorization: true,
+			cs_authorization: true,
 			user_authorization: false,
 			address: '202 Pine St'
 		},
@@ -55,7 +55,7 @@ export async function seed(knex: Knex): Promise<void> {
 			last_name: 'Kim',
 			email: 'kimau@example.com',
 			password: '12345678',
-			admin_authorization: true,
+			cs_authorization: true,
 			user_authorization: true,
 			address: 'HK'
 		}

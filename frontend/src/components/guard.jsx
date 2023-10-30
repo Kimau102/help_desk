@@ -3,8 +3,8 @@ import React from 'react'
 export function useGuard() {
 	const [loading, setLoading] = React.useState(true)
 	const [loginStatus, setLoginStatus] = React.useState(false)
-	const [userAuthorization, setClientAuthorization] = React.useState(null)
-	const [adminAuthorization, setAdminAuthorization] = React.useState(null)
+	const [userAuthorization, setUserAuthorization] = React.useState(null)
+	const [csAuthorization, setCsAuthorization] = React.useState(null)
 	const [userID, setUserID] = React.useState(null)
 	const [userName, setUserName] = React.useState(null)
 	const [userAddress, setUserAddress] = React.useState(null)
@@ -16,8 +16,8 @@ export function useGuard() {
 				if (res.login_status === true) {
 					setLoading(false)
 					setLoginStatus(res.login_status)
-					setClientAuthorization(res.user_authorization)
-					setAdminAuthorization(res.admin_authorization)
+					setUserAuthorization(res.user_authorization)
+					setCsAuthorization(res.cs_authorization)
 					setUserID(res.user_id)
 					setUserName(res.user_first_name + ' ' + res.user_last_name)
 					setUserAddress(res.address)
@@ -35,7 +35,7 @@ export function useGuard() {
 		loading,
 		loginStatus,
 		userAuthorization,
-		adminAuthorization,
+		csAuthorization,
 		userID,
 		userName,
 		userAddress

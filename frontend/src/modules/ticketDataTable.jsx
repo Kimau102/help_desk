@@ -8,6 +8,10 @@ import LoginPageContainer from './loginPage'
 import CircularIndeterminate from '../components/loading'
 import { useGuard } from '../components/guard'
 import { TicketAction } from './ticketAction'
+import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import Avatar from '@mui/material/Avatar';
 
 export function TicketDataTable({
 	status,
@@ -25,7 +29,7 @@ export function TicketDataTable({
 		defaultModules || ''
 	)
 
-	const { loading, loginStatus, userAuthorization } = useGuard()
+	const { loading, loginStatus, csAuthorization } = useGuard()
 
 	React.useEffect(() => {
 		const fetchData = async () => {
@@ -62,47 +66,54 @@ export function TicketDataTable({
 			(isModulesAll || selectModules === ticket.modules)
 		)
 	})
-	
+
 	const [ticketID, setTicketID] = React.useState(null)
-    const [ticketInfo, setTicketInfo] = React.useState('')
+	const [ticketInfo, setTicketInfo] = React.useState('')
 
 	const handleEditButton = (ticketID) => {
 		setTicketID(ticketID);
 	}
 
-    React.useEffect(() => {
-        if (loginStatus === true) {
-            (async () => {
-                const res = await (await fetch('/api/tickets')).json();
-                const selectedTicket = res.find((ticket) => ticket.id === ticketID);
-                if (selectedTicket) {
-                    setTicketInfo(selectedTicket);
-                }
-            })();
-        }
-    }, [loginStatus, ticketID]);
+	React.useEffect(() => {
+		if (loginStatus === true) {
+			(async () => {
+				const res = await (await fetch('/api/tickets')).json();
+				const selectedTicket = res.find((ticket) => ticket.id === ticketID);
+				if (selectedTicket) {
+					setTicketInfo(selectedTicket);
+				}
+			})();
+		}
+	}, [loginStatus, ticketID]);
 
 	const columns = [
 		{
-			field: 'requester',
+			field: 'requesterInfo',
 			headerName: 'Requester',
-			width: 150
+			width: 250,
+			renderCell: (params) => {
+				const name = params.row.requester; 
+				const initials = name
+					.split(' ')
+					.map((word) => word[0])
+					.join('');
+				return (
+					<div style={{ display: 'flex', alignItems: 'center' }}>
+						<Stack padding={2}>
+							<Avatar>{initials}</Avatar>
+						</Stack>
+						<div>
+							<Typography>
+								{params.row.requester}
+							</Typography>
+							<Typography>
+								{params.row.email}
+							</Typography>
+						</div>
+					</div>
+				)
+			}
 		},
-		{
-			field: 'email',
-			headerName: 'Email',
-			width: 200
-		},
-		// {
-		// 	field: 'requesterInfo',
-		// 	headerName: 'Requester',
-		// 	width: 300,
-		// 	valueGetter: (params) => {
-		// 		return (
-		// 			`${params.row.requester} /n ${params.row.email}`
-		// 			);
-		// 	}
-		// },
 		{
 			field: 'modules',
 			headerName: 'Modules',
@@ -121,25 +132,64 @@ export function TicketDataTable({
 		{
 			field: 'priority',
 			headerName: 'Priority',
-			width: 150
+			width: 150,
+			renderCell: (params) => {
+				let chipColor = 'default';
+				switch (params.row.priority) {
+					case 'Urgent':
+						chipColor = 'primary';
+						break;
+					case 'High':
+						chipColor = 'secondary';
+						break;
+					case 'Medium':
+						chipColor = 'warning';
+						break;
+					case 'Low':
+						chipColor = 'success';
+						break;
+					default:
+						chipColor = 'default';
+						break;
+				}
+				return (
+					<Stack direction="row" spacing={1}>
+						<Chip
+							label={params.row.priority}
+							variant="outlined"
+							color={chipColor}
+						/>
+					</Stack>
+				)
+			}
 		},
 		{
 			field: 'status',
 			headerName: 'Status',
-			width: 150
+			width: 150,
+			renderCell: (params) => {
+				return (
+					<Stack direction="row" spacing={1}>
+						<Chip
+							label={params.row.status}
+							variant="outlined"
+						/>
+					</Stack>
+				)
+			}
 		},
 		{
 			field: 'last_message',
 			headerName: 'Last Message',
 			width: 200
-		}, 
+		},
 		{
 			headerName: 'Action',
 			width: 150,
 			renderCell: (params) => {
 				return (
 					<Button onClick={() => handleEditButton(params.row.id)}>
-					<TicketAction ticketInfo ={ticketInfo}/>
+						<TicketAction ticketInfo={ticketInfo} />
 					</Button>
 				)
 			}
@@ -157,20 +207,19 @@ export function TicketDataTable({
 						<h3>Tickets List</h3>
 						<div>
 							<div style={{ height: 52, width: '100%' }}>
-								{userAuthorization === 1 &&
-									showNewTicketButton && (
-										<>
-											<Link to='./new-ticket'>
-												<Button
-													variant='contained'
-													color='success'
-													style={{ margin: 9 }}
-												>
-													+ New Tickets
-												</Button>
-											</Link>
-										</>
-									)}
+								{csAuthorization === 1 && showNewTicketButton && (
+									<>
+										<Link to='./new-ticket'>
+											<Button
+												variant='contained'
+												color='success'
+												style={{ margin: 9 }}
+											>
+												+ New Tickets
+											</Button>
+										</Link>
+									</>
+								)}
 								<FilterModules
 									selectModules={selectModules}
 									onModuleChange={handleModuleChange}

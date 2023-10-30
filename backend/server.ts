@@ -19,7 +19,7 @@ declare module 'express-session' {
 		user_email?: string
 		user_id: number
 		user_authorization: number
-		admin_authorization: number
+		cs_authorization: number
 	}
 }
 app.use(express.urlencoded({ extended: true }))

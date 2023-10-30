@@ -11,7 +11,7 @@ ticketsRoutes.delete('/', deleteTicket)
 
 async function getAllTickets(req: Request, res: Response) {
 	try {
-		if (req.session.admin_authorization === 1) {
+		if (req.session.cs_authorization === 1) {
 			const results = await knex('tickets as t')
 				.select([
 					't.id',
