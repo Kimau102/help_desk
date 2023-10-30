@@ -15,6 +15,8 @@ import Stack from '@mui/material/Stack';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import DeleteIcon from '@mui/icons-material/Delete';
+import DialogContentText from '@mui/material/DialogContentText';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -25,7 +27,64 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     },
 }));
 
-export default function TicketDialog({ ticketInfo }) {
+function DeleteTicketDialog({id}) {
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const handleAgree = async () => {
+        const res = await fetch('/api/tickets', {
+            method: 'DELETE',
+            headers: {
+                'content-Type': 'application/json'
+            },
+            body: JSON.stringify({id: id})
+        })
+        if (res.status ===200 ) {
+			window.location.href = '/all-tickets'
+            setOpen(false);
+        } else {
+            setOpen(true);
+        }
+    };
+
+    return (
+        <div>
+            <Button>
+                <DeleteIcon onClick={handleClickOpen} />
+            </Button>
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    {"Alert"}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Are you sure delete the ticket?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose}>Disagree</Button>
+                    <Button onClick={handleAgree} autoFocus>
+                        Agree
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        </div>
+    );
+}
+
+export function TicketAction({ ticketInfo }) {
     const [open, setOpen] = React.useState(false);
     const [selectedStatus, setSelectedStatus] = React.useState(ticketInfo.status)
 
@@ -83,10 +142,27 @@ export default function TicketDialog({ ticketInfo }) {
     const handleClickOpen = () => {
         setOpen(true);
     };
-    const handleClose = () => {
+    const handleClickClose = () => {
         setOpen(false);
         setSelectedStatus(ticketInfo.status)
     };
+
+    const handleSave = async (newStatus) => {
+        const res = await fetch('/api/tickets', {
+            method: 'PUT',
+            headers: {
+                'content-Type': 'application/json'
+            },
+            body: JSON.stringify({ id: ticketInfo.id, status: selectedStatus })
+        })
+
+        if (res.status ===200 ) {
+			window.location.href = '/all-tickets'
+            setOpen(false);
+        } else {
+            setOpen(true);
+        }
+    }
 
     return (
         <div>
@@ -94,7 +170,7 @@ export default function TicketDialog({ ticketInfo }) {
                 <EditIcon onClick={handleClickOpen} />
             </Button>
             <BootstrapDialog
-                onClose={handleClose}
+                onClose={handleClickClose}
                 aria-labelledby="customized-dialog-title"
                 open={open}
             >
@@ -103,7 +179,7 @@ export default function TicketDialog({ ticketInfo }) {
                 </DialogTitle>
                 <IconButton
                     aria-label="close"
-                    onClick={handleClose}
+                    onClick={handleClickClose}
                     sx={{
                         position: 'absolute',
                         right: 8,
@@ -138,12 +214,13 @@ export default function TicketDialog({ ticketInfo }) {
                     <Typography gutterBottom>
                         Tags:
                     </Typography>
+                    <DeleteTicketDialog color='secondary' id={ticketInfo.id} />
                 </DialogContent>
                 <DialogActions>
-                    <Button autoFocus onClick={handleClose}>
+                    <Button autoFocus onClick={handleSave}>
                         Save changes
                     </Button>
-                    <Button autoFocus onClick={handleClose}>
+                    <Button autoFocus onClick={handleClickClose}>
                         Cancel
                     </Button>
                 </DialogActions>

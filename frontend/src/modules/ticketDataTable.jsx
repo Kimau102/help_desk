@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 import LoginPageContainer from './loginPage'
 import CircularIndeterminate from '../components/loading'
 import { useGuard } from '../components/guard'
-import TicketDialog from './ticketDialog'
+import { TicketAction } from './ticketAction'
 
 export function TicketDataTable({
 	status,
@@ -69,7 +69,7 @@ export function TicketDataTable({
 	const handleEditButton = (ticketID) => {
 		setTicketID(ticketID);
 	}
-	
+
     React.useEffect(() => {
         if (loginStatus === true) {
             (async () => {
@@ -139,7 +139,7 @@ export function TicketDataTable({
 			renderCell: (params) => {
 				return (
 					<Button onClick={() => handleEditButton(params.row.id)}>
-					<TicketDialog ticketInfo ={ticketInfo}/>
+					<TicketAction ticketInfo ={ticketInfo}/>
 					</Button>
 				)
 			}
