@@ -8,7 +8,7 @@ import { useGuard } from '../components/guard'
 import LoginPageContainer from './loginPage'
 
 function NewTicketComponent() {
-	const { loginStatus, userAuthorization } = useGuard()
+	const { loginStatus } = useGuard()
 
 	const [formData, setFormData] = useState({
 		modules: '',
@@ -61,7 +61,7 @@ function NewTicketComponent() {
 
 	return (
 		<div>
-			{loginStatus && userAuthorization === 1 ? (
+			{loginStatus ? (
 				<>
 					<h1>Create New Ticket</h1>
 					<form onSubmit={handleSubmit}>

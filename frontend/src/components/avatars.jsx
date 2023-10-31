@@ -37,10 +37,7 @@ export default function ImageAvatars() {
 
 	return (
 		<div className={classes.root}>
-			<Avatar alt={userName} src={userName}>
-				{' '}
-				{avatarContent}{' '}
-			</Avatar>
+			<Avatar alt={userName}> {avatarContent} </Avatar>
 		</div>
 	)
 }

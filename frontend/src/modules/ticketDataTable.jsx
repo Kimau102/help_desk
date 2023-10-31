@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { DataGrid } from '@mui/x-data-grid'
+import TableGrid from '../components/tableGrid'
 import Button from '@mui/material/Button'
 import { FilterPriority, FilterModules } from '../components/filter'
 import TicketsInsight from './ticketsInsight'
@@ -8,10 +9,10 @@ import LoginPageContainer from './loginPage'
 import CircularIndeterminate from '../components/loading'
 import { useGuard } from '../components/guard'
 import { TicketAction } from './ticketAction'
-import Chip from '@mui/material/Chip';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import Avatar from '@mui/material/Avatar';
+import Chip from '@mui/material/Chip'
+import Stack from '@mui/material/Stack'
+import Typography from '@mui/material/Typography'
+import Avatar from '@mui/material/Avatar'
 
 export function TicketDataTable({
 	status,
@@ -20,7 +21,6 @@ export function TicketDataTable({
 	showNewTicketButton,
 	showTicketsInsight
 }) {
-
 	const [tickets, setTickets] = React.useState([])
 	const [selectPriority, setSelectPriority] = React.useState(
 		defaultPriority || ''
@@ -29,7 +29,7 @@ export function TicketDataTable({
 		defaultModules || ''
 	)
 
-	const { loading, loginStatus, csAuthorization } = useGuard()
+	const { loading, loginStatus } = useGuard()
 
 	React.useEffect(() => {
 		const fetchData = async () => {
@@ -71,20 +71,22 @@ export function TicketDataTable({
 	const [ticketInfo, setTicketInfo] = React.useState('')
 
 	const handleEditButton = (ticketID) => {
-		setTicketID(ticketID);
+		setTicketID(ticketID)
 	}
 
 	React.useEffect(() => {
 		if (loginStatus === true) {
-			(async () => {
-				const res = await (await fetch('/api/tickets')).json();
-				const selectedTicket = res.find((ticket) => ticket.id === ticketID);
+			;(async () => {
+				const res = await (await fetch('/api/tickets')).json()
+				const selectedTicket = res.find(
+					(ticket) => ticket.id === ticketID
+				)
 				if (selectedTicket) {
-					setTicketInfo(selectedTicket);
+					setTicketInfo(selectedTicket)
 				}
-			})();
+			})()
 		}
-	}, [loginStatus, ticketID]);
+	}, [loginStatus, ticketID])
 
 	const columns = [
 		{
@@ -92,23 +94,19 @@ export function TicketDataTable({
 			headerName: 'Requester',
 			width: 250,
 			renderCell: (params) => {
-				const name = params.row.requester; 
+				const name = params.row.requester
 				const initials = name
 					.split(' ')
 					.map((word) => word[0])
-					.join('');
+					.join('')
 				return (
 					<div style={{ display: 'flex', alignItems: 'center' }}>
 						<Stack padding={2}>
 							<Avatar>{initials}</Avatar>
 						</Stack>
 						<div>
-							<Typography>
-								{params.row.requester}
-							</Typography>
-							<Typography>
-								{params.row.email}
-							</Typography>
+							<Typography>{params.row.requester}</Typography>
+							<Typography>{params.row.email}</Typography>
 						</div>
 					</div>
 				)
@@ -134,29 +132,29 @@ export function TicketDataTable({
 			headerName: 'Priority',
 			width: 150,
 			renderCell: (params) => {
-				let chipColor = 'default';
+				let chipColor = 'default'
 				switch (params.row.priority) {
 					case 'Urgent':
-						chipColor = 'primary';
-						break;
+						chipColor = 'primary'
+						break
 					case 'High':
-						chipColor = 'secondary';
-						break;
+						chipColor = 'secondary'
+						break
 					case 'Medium':
-						chipColor = 'warning';
-						break;
+						chipColor = 'warning'
+						break
 					case 'Low':
-						chipColor = 'success';
-						break;
+						chipColor = 'success'
+						break
 					default:
-						chipColor = 'default';
-						break;
+						chipColor = 'default'
+						break
 				}
 				return (
-					<Stack direction="row" spacing={1}>
+					<Stack direction='row' spacing={1}>
 						<Chip
 							label={params.row.priority}
-							variant="outlined"
+							variant='outlined'
 							color={chipColor}
 						/>
 					</Stack>
@@ -169,11 +167,8 @@ export function TicketDataTable({
 			width: 150,
 			renderCell: (params) => {
 				return (
-					<Stack direction="row" spacing={1}>
-						<Chip
-							label={params.row.status}
-							variant="outlined"
-						/>
+					<Stack direction='row' spacing={1}>
+						<Chip label={params.row.status} variant='outlined' />
 					</Stack>
 				)
 			}
@@ -188,9 +183,9 @@ export function TicketDataTable({
 			width: 150,
 			renderCell: (params) => {
 				return (
-					<Button onClick={() => handleEditButton(params.row.id)}>
+					<div onClick={() => handleEditButton(params.row.id)}>
 						<TicketAction ticketInfo={ticketInfo} />
-					</Button>
+					</div>
 				)
 			}
 		}
@@ -207,7 +202,7 @@ export function TicketDataTable({
 						<h3>Tickets List</h3>
 						<div>
 							<div style={{ height: 52, width: '100%' }}>
-								{csAuthorization === 1 && showNewTicketButton && (
+								{showNewTicketButton && (
 									<>
 										<Link to='./new-ticket'>
 											<Button
@@ -239,7 +234,15 @@ export function TicketDataTable({
 							checkboxSelection
 							disableRowSelectionOnClick
 							disableColumnMenu
+							initialState={{
+								pagination: {
+									paginationModel: { page: 0, pageSize: 10 }
+								}
+							}}
+							pageSizeOptions={[10, 20, 50, 100]}
+							pa
 						/>
+						<TableGrid rows={filteredRows} />
 					</div>
 				</>
 			) : (

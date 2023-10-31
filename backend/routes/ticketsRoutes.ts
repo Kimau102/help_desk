@@ -105,29 +105,31 @@ async function editTicket(req: Request, res: Response) {
 	try {
 		const ticketID = req.body.id
 		const ticketStatus = req.body.status
+		const ticketPriority = req.body.priority
 
-		await knex('tickets').where('id', '=', ticketID).update(
-			{
+		await knex('tickets')
+			.where('id', '=', ticketID)
+			.update({
 				status: ticketStatus,
+				priority: ticketPriority,
 				last_message: knex.raw('CURRENT_TIMESTAMP'),
 				updated_at: knex.raw('CURRENT_TIMESTAMP')
-			}
-		)
-		res.status(200).json({msg: 'Update ticket success'})
-	} catch(e) {
+			})
+		res.status(200).json({ msg: 'Update ticket success' })
+	} catch (e) {
 		console.log(e)
-		res.status(400).json({msg: 'Update ticket failure'})
+		res.status(400).json({ msg: 'Update ticket failure' })
 	}
 }
 
 async function deleteTicket(req: Request, res: Response) {
-	try{
+	try {
 		const ticketID = req.body.id
 		console.log(ticketID)
 		await knex('tickets').where('id', '=', ticketID).del()
-		res.status(200).json({msg: 'Delete ticket success'})
-	} catch(e) {
+		res.status(200).json({ msg: 'Delete ticket success' })
+	} catch (e) {
 		console.log(e)
-		res.status(400).json({msg: 'Delete ticket failure'})
+		res.status(400).json({ msg: 'Delete ticket failure' })
 	}
 }
