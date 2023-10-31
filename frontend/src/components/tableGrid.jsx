@@ -16,13 +16,10 @@ import Avatar from '@mui/material/Avatar'
 import { useGuard } from '../components/guard'
 
 export default function TableGrid({
-	rows,
-	pageSizeOptions,
-	initialPage,
-	initialPageSize
+	rows
 }) {
-	const [page, setPage] = useState(initialPage || 0)
-	const [rowsPerPage, setRowsPerPage] = useState(initialPageSize || 10)
+	const [page, setPage] = useState(0)
+	const [rowsPerPage, setRowsPerPage] = useState(10)
 	const { loginStatus } = useGuard()
 
 	const handleChangePage = (event, newPage) => {
@@ -43,7 +40,7 @@ export default function TableGrid({
 
 	React.useEffect(() => {
 		if (loginStatus === true) {
-			;(async () => {
+			; (async () => {
 				const res = await (await fetch('/api/tickets')).json()
 				const selectedTicket = res.find(
 					(ticket) => ticket.id === ticketID
@@ -175,30 +172,32 @@ export default function TableGrid({
 						</TableRow>
 					</TableHead>
 					<TableBody>
-						{rows.map((row) => (
-							<TableRow key={row.id}>
-								<TableCell padding='checkbox'>
-									<Checkbox />
-								</TableCell>
-								{columns.map((column, columnIndex) => (
-									<TableCell key={column.field}>
-										{column.renderCell
-											? column.renderCell({
+						{rows
+							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+							.map((row) => (
+								<TableRow key={row.id}>
+									<TableCell padding='checkbox'>
+										<Checkbox />
+									</TableCell>
+									{columns.map((column, columnIndex) => (
+										<TableCell key={column.field}>
+											{column.renderCell
+												? column.renderCell({
 													row: row,
 													value: row[column.field],
-													field: column.field
-													// columnIndex: columnIndex,
-											  })
-											: row[column.field]}
-									</TableCell>
-								))}
-							</TableRow>
-						))}
+													field: column.field,
+													columnIndex: columnIndex,
+												})
+												: row[column.field]}
+										</TableCell>
+									))}
+								</TableRow>
+							))}
 					</TableBody>
 				</Table>
 			</TableContainer>
 			<TablePagination
-				rowsPerPageOptions={pageSizeOptions || [10, 20, 50]}
+				rowsPerPageOptions={[10, 20, 50]}
 				component='div'
 				count={rows.length}
 				rowsPerPage={rowsPerPage}
