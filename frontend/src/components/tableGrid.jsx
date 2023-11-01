@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import TablePagination from '@mui/material/TablePagination'
-import Checkbox from '@mui/material/Checkbox'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
@@ -14,6 +13,8 @@ import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import Avatar from '@mui/material/Avatar'
 import { useGuard } from '../components/guard'
+// import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
 
 export default function TableGrid({
 	rows
@@ -52,6 +53,7 @@ export default function TableGrid({
 		}
 	}, [loginStatus, ticketID])
 
+	// ------------------------------Columns--------------------------------
 	const columns = [
 		{
 			field: 'requesterInfo',
@@ -155,14 +157,38 @@ export default function TableGrid({
 		}
 	]
 
+
+	const [selectedRows, setSelectedRows] = React.useState([]);
+
+	const handleCheckboxChange = (event, rowId) => {
+		if (event.target.checked) {
+			setSelectedRows([...selectedRows, rowId]);
+		} else {
+			setSelectedRows(selectedRows.filter((id) => id !== rowId));
+		}
+	};
+
+	const isAllSelected = selectedRows.length === rows.length;
+
+	const handleSelectAll = (event) => {
+		if (event.target.checked) {
+			setSelectedRows(rows.map((row) => row.id));
+		} else {
+			setSelectedRows([]);
+		}
+	};
+
 	return (
 		<div>
 			<TableContainer component={Paper}>
 				<Table>
 					<TableHead>
 						<TableRow>
-							<TableCell padding='checkbox'>
-								<Checkbox />
+							<TableCell padding="checkbox">
+								<Checkbox
+									checked={isAllSelected}
+									onChange={handleSelectAll}
+								/>
 							</TableCell>
 							{columns.map((column) => (
 								<TableCell key={column.field}>
@@ -176,21 +202,27 @@ export default function TableGrid({
 							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 							.map((row) => (
 								<TableRow key={row.id}>
-									<TableCell padding='checkbox'>
-										<Checkbox />
+									<TableCell padding="checkbox">
+										<Checkbox
+											checked={selectedRows.includes(row.id)}
+											onChange={(event) => handleCheckboxChange(event, row.id)}
+										/>
 									</TableCell>
-									{columns.map((column, columnIndex) => (
-										<TableCell key={column.field}>
-											{column.renderCell
-												? column.renderCell({
-													row: row,
-													value: row[column.field],
-													field: column.field,
-													columnIndex: columnIndex,
-												})
-												: row[column.field]}
-										</TableCell>
-									))}
+									{columns.map((column, columnIndex) => {
+										// console.log(row.id)
+										return (
+											<TableCell key={column.field}>
+												{column.renderCell
+													? column.renderCell({
+														row: row,
+														value: row[column.field],
+														field: column.field,
+														columnIndex: columnIndex,
+													})
+													: row[column.field]}
+											</TableCell>
+										)
+									})}
 								</TableRow>
 							))}
 					</TableBody>
@@ -198,7 +230,7 @@ export default function TableGrid({
 			</TableContainer>
 			<TablePagination
 				rowsPerPageOptions={[10, 20, 50]}
-				component='div'
+				component="div"
 				count={rows.length}
 				rowsPerPage={rowsPerPage}
 				page={page}
