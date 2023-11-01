@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express'
 import { formatDistanceToNow } from 'date-fns'
 import { knex } from '../util'
+import { io } from '../server'
 
 export const ticketsRoutes = express.Router()
 
@@ -94,7 +95,7 @@ async function createTicket(req: Request, res: Response) {
 				}
 			])
 			.into('tickets')
-
+		io.emit('new-ticket', 'New ticket posted')
 		res.status(200).json({ msg: 'Create tickets complete' })
 	} catch (err) {
 		console.log('Update ticket error')
@@ -125,7 +126,6 @@ async function editTicket(req: Request, res: Response) {
 async function deleteTicket(req: Request, res: Response) {
 	try {
 		const ticketID = req.body.id
-		console.log(ticketID)
 		await knex('tickets').where('id', '=', ticketID).del()
 		res.status(200).json({ msg: 'Delete ticket success' })
 	} catch (e) {

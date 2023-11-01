@@ -157,7 +157,7 @@ export default function TableGrid({
 		}
 	]
 
-
+	// --------------------------------------check Box handler--------------------------------
 	const [selectedRows, setSelectedRows] = React.useState([]);
 
 	const handleCheckboxChange = (event, rowId) => {
@@ -180,6 +180,15 @@ export default function TableGrid({
 
 	return (
 		<div>
+			<TablePagination
+				rowsPerPageOptions={[10, 20, 50]}
+				component="div"
+				count={rows.length}
+				rowsPerPage={rowsPerPage}
+				page={page}
+				onPageChange={handleChangePage}
+				onRowsPerPageChange={handleChangeRowsPerPage}
+			/>
 			<TableContainer component={Paper}>
 				<Table>
 					<TableHead>
@@ -228,15 +237,6 @@ export default function TableGrid({
 					</TableBody>
 				</Table>
 			</TableContainer>
-			<TablePagination
-				rowsPerPageOptions={[10, 20, 50]}
-				component="div"
-				count={rows.length}
-				rowsPerPage={rowsPerPage}
-				page={page}
-				onPageChange={handleChangePage}
-				onRowsPerPageChange={handleChangeRowsPerPage}
-			/>
 		</div>
 	)
 }

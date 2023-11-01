@@ -5,7 +5,7 @@ dotenv.config()
 
 const config: { [key: string]: Knex.Config } = {
 	development: {
-		debug: true,
+		// debug: true,
 		client: 'mysql',
 		connection: {
 			port: 3306,

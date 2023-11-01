@@ -6,6 +6,7 @@ import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
 import { useGuard } from '../components/guard'
 import LoginPageContainer from './loginPage'
+import { socket } from '../socket'
 
 function NewTicketComponent() {
 	const { loginStatus } = useGuard()
@@ -54,6 +55,12 @@ function NewTicketComponent() {
 				cs: '',
 				priority: ''
 			})
+			socket.connect();
+			socket.on('new-ticket', (data) => {
+				console.log(data)
+			})
+			socket.disconnect()
+
 		} else {
 			console.log('Create Ticket Failure')
 		}

@@ -4,8 +4,13 @@ import { ticketsRoutes } from './routes/ticketsRoutes'
 import { userRoutes } from './routes/usersRoutes'
 import { sessionSecret } from './util'
 import { isLoggedInAPI } from './guard'
+import http from 'http';
+import { Server as SocketIO} from 'socket.io' 
 
 const app = express()
+const server = new http.Server(app)
+export const io = new SocketIO(server)
+
 
 app.use(
 	session({
@@ -14,6 +19,7 @@ app.use(
 		saveUninitialized: true
 	})
 )
+
 declare module 'express-session' {
 	interface SessionData {
 		user_email?: string
@@ -22,12 +28,13 @@ declare module 'express-session' {
 		cs_authorization: number
 	}
 }
+ 
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use('/api/user', userRoutes)
 app.use('/api/tickets', isLoggedInAPI, ticketsRoutes)
 
 const PORT = 8080
-app.listen(PORT, () => {
+server.listen(PORT, () => {
 	console.log(`Listening on Port ${PORT}`)
 })
