@@ -35,9 +35,9 @@ app.use('/api/tickets', isLoggedInAPI, ticketsRoutes)
 
 const PORT = 8080
 
-io.on('connection', (socket) => {
-	console.log(socket)
-})
+// io.on('connection', (socket) => {
+// 	console.log(socket)
+// })
 
 server.listen(PORT, () => {
 	console.log(`Listening on Port ${PORT}`)

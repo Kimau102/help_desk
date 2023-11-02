@@ -26,7 +26,6 @@ function NewTicketComponent() {
 
 	const handleSubmit = async (event) => {
 		event.preventDefault()
-
 		if (
 			formData.modules.trim() === '' ||
 			formData.subject.trim() === '' ||
@@ -46,7 +45,6 @@ function NewTicketComponent() {
 			body: JSON.stringify(formData)
 		})
 		if (res.status === 200) {
-			console.log('Create Ticket Success')
 			setFormData({
 				modules: '',
 				subject: '',
@@ -87,8 +85,7 @@ function NewTicketComponent() {
 						<div style={{ display: 'flex' }}>
 							<Select
 								name='priority'
-								label='Priority'
-								value={formData.priority}
+								value={formData.priority || ''}
 								onChange={handleInputChange}
 								style={{ flex: 1 }}
 							>
@@ -101,8 +98,7 @@ function NewTicketComponent() {
 						<div style={{ display: 'flex' }}>
 							<Select
 								name='status'
-								label='Status'
-								value={formData.status}
+								value={formData.status || ''}
 								onChange={handleInputChange}
 								style={{ flex: 1 }}
 							>
