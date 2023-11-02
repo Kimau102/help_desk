@@ -11,7 +11,6 @@ const app = express()
 const server = new http.Server(app)
 export const io = new SocketIO(server)
 
-
 app.use(
 	session({
 		secret: sessionSecret,
@@ -35,6 +34,11 @@ app.use('/api/user', userRoutes)
 app.use('/api/tickets', isLoggedInAPI, ticketsRoutes)
 
 const PORT = 8080
+
+io.on('connection', (socket) => {
+	console.log(socket)
+})
+
 server.listen(PORT, () => {
 	console.log(`Listening on Port ${PORT}`)
 })
