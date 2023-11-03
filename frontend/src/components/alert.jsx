@@ -9,7 +9,7 @@ export default function NewTicketAlert() {
   const { csAuthorization } = useGuard();
 
   useEffect(() => {
-    socket.connect();
+    // socket.connect();
     socket.on('new-ticket', (data) => {
       setNewTicketAlert(true);
 
@@ -19,7 +19,7 @@ export default function NewTicketAlert() {
     });
     return () => {
       socket.off('new-ticket');
-      socket.disconnect();
+      // socket.disconnect();
     };
   }, []);
 

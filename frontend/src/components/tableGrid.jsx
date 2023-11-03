@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import TablePagination from '@mui/material/TablePagination'
+// import TablePagination from '@mui/material/TablePagination'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
@@ -15,21 +15,16 @@ import Avatar from '@mui/material/Avatar'
 import { useGuard } from '../components/guard'
 // import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
+import Pagination from '@mui/material/Pagination';
 
 export default function TableGrid({
 	rows
 }) {
-	const [page, setPage] = useState(0)
-	const [rowsPerPage, setRowsPerPage] = useState(10)
+	const [page, setPage] = useState(1)
+	const rowPerPage = 10;
 	const { loginStatus } = useGuard()
-
 	const handleChangePage = (event, newPage) => {
 		setPage(newPage)
-	}
-
-	const handleChangeRowsPerPage = (event) => {
-		setRowsPerPage(parseInt(event.target.value, 10))
-		setPage(0)
 	}
 
 	const [ticketID, setTicketID] = React.useState(null)
@@ -41,7 +36,7 @@ export default function TableGrid({
 
 	React.useEffect(() => {
 		if (loginStatus === true) {
-			; (async () => {
+			(async () => {
 				const res = await (await fetch('/api/tickets')).json()
 				const selectedTicket = res.find(
 					(ticket) => ticket.id === ticketID
@@ -180,15 +175,13 @@ export default function TableGrid({
 
 	return (
 		<div>
-			<TablePagination
-				rowsPerPageOptions={[10, 20, 50]}
-				component="div"
-				count={rows.length}
-				rowsPerPage={rowsPerPage}
-				page={page}
-				onPageChange={handleChangePage}
-				onRowsPerPageChange={handleChangeRowsPerPage}
-			/>
+			<Stack spacing={2} style={{position: 'relative', alignItems: 'center'}}>
+				<Pagination
+					count={Math.ceil(rows.length / rowPerPage)}
+					page={page}
+					onChange={(event, newPage) => handleChangePage(event, newPage)}
+				/>
+			</Stack>
 			<TableContainer component={Paper}>
 				<Table>
 					<TableHead>
@@ -208,7 +201,7 @@ export default function TableGrid({
 					</TableHead>
 					<TableBody>
 						{rows
-							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+							.slice((page -1 ) * rowPerPage, page * rowPerPage )
 							.map((row) => (
 								<TableRow key={row.id}>
 									<TableCell padding="checkbox">
@@ -218,7 +211,6 @@ export default function TableGrid({
 										/>
 									</TableCell>
 									{columns.map((column, columnIndex) => {
-										// console.log(row.id)
 										return (
 											<TableCell key={column.field}>
 												{column.renderCell
