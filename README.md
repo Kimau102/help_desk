@@ -12,12 +12,12 @@ Installation:
     DB_PASSWORD=yourPassword
     DB_DATABASE=yourDatabase
     ```
-4. run npm install or npm install --force at './backend' and './frontend' for installing related library
+4. run 'npm install' or 'npm install --force' at './backend' and './frontend' for installing related library
 
-5. run npm run knex migrate:latest to create tables to your Database
+5. run 'npm run knex migrate:latest' to create tables to your Database
 
-6. run npm run knex seed:run to create content for tables
+6. run 'npm run knex seed:run' to create content for tables
 
-7.  run npm start at './backend' and './frontend'
+7. run 'npm start' at './backend' and './frontend'
 
 8. use user account at 'backend\seeds\create_users_tickets.ts' get login ac and password or check table from MySQL database users table
